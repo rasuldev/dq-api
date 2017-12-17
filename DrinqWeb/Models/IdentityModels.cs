@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using DrinqWeb.Models.CodeFirstModels;
 
 namespace DrinqWeb.Models
 {
@@ -20,9 +21,21 @@ namespace DrinqWeb.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Assignment> Assignments;
+        public DbSet<Quest> Quests;
+        public DbSet<UserAssignment> UserAssignments;
+        public DbSet<UserQuest> UserQuests;
+        public DbSet<VerificationItem> VerificationItems;
+
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("DataEntities", throwIfV1Schema: false)
         {
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            
         }
 
         public static ApplicationDbContext Create()
