@@ -178,6 +178,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AssignmentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\QuestsController.cs" />
@@ -191,6 +192,10 @@
     <Compile Include="Migrations\201712180455015_AddDbMigration.cs" />
     <Compile Include="Migrations\201712180455015_AddDbMigration.Designer.cs">
       <DependentUpon>201712180455015_AddDbMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712180513041_AddDbMigration1.cs" />
+    <Compile Include="Migrations\201712180513041_AddDbMigration1.Designer.cs">
+      <DependentUpon>201712180513041_AddDbMigration1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -270,6 +275,11 @@
     <Content Include="Views\Quests\Details.cshtml" />
     <Content Include="Views\Quests\Edit.cshtml" />
     <Content Include="Views\Quests\Index.cshtml" />
+    <Content Include="Views\Assignments\Create.cshtml" />
+    <Content Include="Views\Assignments\Delete.cshtml" />
+    <Content Include="Views\Assignments\Details.cshtml" />
+    <Content Include="Views\Assignments\Edit.cshtml" />
+    <Content Include="Views\Assignments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -288,6 +298,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712180455015_AddDbMigration.resx">
       <DependentUpon>201712180455015_AddDbMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712180513041_AddDbMigration1.resx">
+      <DependentUpon>201712180513041_AddDbMigration1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

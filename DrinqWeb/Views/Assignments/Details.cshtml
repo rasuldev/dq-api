@@ -1,0 +1,74 @@
+﻿@model DrinqWeb.Models.CodeFirstModels.Assignment
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Assignment</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.TextRequired)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.TextRequired)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.MediaRequired)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.MediaRequired)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Sort)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Sort)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.TextCodes)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.TextCodes)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>
