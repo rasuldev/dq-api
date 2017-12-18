@@ -11,7 +11,6 @@ namespace DrinqWeb.Models.CodeFirstModels
         public string Title { get; set; }
         public string Description { get; set; }
         public int? MaxTime { get; set; }
-        public string Name { get; set; }
         public bool IsPublished { get; set; }
         public int Sort { get; set; }
         public bool IsDeleted { get; set; }
