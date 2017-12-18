@@ -14,6 +14,6 @@ namespace DrinqWeb.Models.CodeFirstModels
         public bool TextRequired { get; set; }
         public bool MediaRequired { get; set; }
         public int Sort { get; set; }
-        public List<string> TextCodes { get; set; }
+        public string TextCodes { get; set; }
     }
 }
