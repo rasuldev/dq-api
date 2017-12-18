@@ -8,7 +8,7 @@ namespace DrinqWeb.Models.CodeFirstModels
     public class UserAssignment
     {
         public int Id { get; set; }
-        public int UserQuestId { get; set; }
+        public UserQuest UserQuest { get; set; }
         public Assignment Assignment { get; set; }
         public string UserId { get; set; }
         public DateTime StartDate { get; set; }

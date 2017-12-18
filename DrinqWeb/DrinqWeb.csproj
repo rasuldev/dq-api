@@ -197,6 +197,10 @@
     <Compile Include="Migrations\201712180513041_AddDbMigration1.Designer.cs">
       <DependentUpon>201712180513041_AddDbMigration1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712180620448_AddDbMigration2.cs" />
+    <Compile Include="Migrations\201712180620448_AddDbMigration2.Designer.cs">
+      <DependentUpon>201712180620448_AddDbMigration2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CodeFirstModels\Assignment.cs" />
@@ -301,6 +305,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712180513041_AddDbMigration1.resx">
       <DependentUpon>201712180513041_AddDbMigration1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712180620448_AddDbMigration2.resx">
+      <DependentUpon>201712180620448_AddDbMigration2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

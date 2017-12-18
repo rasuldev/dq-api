@@ -11,9 +11,11 @@ namespace DrinqWeb.Models.CodeFirstModels
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public string TextCodes { get; set; }
         public bool TextRequired { get; set; }
         public bool MediaRequired { get; set; }
         public int Sort { get; set; }
-        public string TextCodes { get; set; }
+        public Quest Quest { get; set; }
+
     }
 }
