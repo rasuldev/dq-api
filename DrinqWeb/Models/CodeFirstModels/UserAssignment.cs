@@ -9,8 +9,8 @@ namespace DrinqWeb.Models.CodeFirstModels
     {
         public int Id { get; set; }
         public int UserQuestId { get; set; }
-        public int AssignmentId { get; set; }
-        public int UserId { get; set; }
+        public Assignment Assignment { get; set; }
+        public string UserId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public UserAssignmentAcceptedStatus TextCodeAccepted { get; set; }

@@ -184,6 +184,17 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CodeFirstModels\Assignment.cs" />
+    <Compile Include="Models\CodeFirstModels\UserAssignment.cs" />
+    <Compile Include="Models\CodeFirstModels\UserAssignmentAcceptedStatus.cs" />
+    <Compile Include="Models\CodeFirstModels\UserAssignmentStatus.cs" />
+    <Compile Include="Models\CodeFirstModels\UserInfo.cs" />
+    <Compile Include="Models\CodeFirstModels\UserQuest.cs" />
+    <Compile Include="Models\CodeFirstModels\Quest.cs" />
+    <Compile Include="Models\CodeFirstModels\UserQuestStatus.cs" />
+    <Compile Include="Models\CodeFirstModels\VerificationItem.cs" />
+    <Compile Include="Models\CodeFirstModels\VerificationItemStatus.cs" />
+    <Compile Include="Models\DataEntites.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

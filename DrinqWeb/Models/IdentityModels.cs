@@ -35,7 +35,12 @@ namespace DrinqWeb.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
+
+            modelBuilder.Entity<UserQuest>()
+                .HasRequired(q => q.Quest);
+
+            modelBuilder.Entity<UserAssignment>()
+                .HasRequired(a => a.Assignment);
         }
 
         public static ApplicationDbContext Create()
