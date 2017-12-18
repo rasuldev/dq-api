@@ -17,7 +17,7 @@ namespace DrinqWeb
             config.Routes.MapHttpRoute(
                 name: "GameApi",
                 routeTemplate: "game/{controller}/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                defaults: new { action = RouteParameter.Optional, id = RouteParameter.Optional }
             );
 
             //config.Routes.MapHttpRoute(
