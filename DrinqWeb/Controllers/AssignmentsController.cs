@@ -37,7 +37,7 @@ namespace DrinqWeb.Controllers
         }
 
         // GET: Assignments/Create
-        public ActionResult Create()
+        public ActionResult Create(int questId)
         {
             return View();
         }
@@ -47,10 +47,11 @@ namespace DrinqWeb.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,TextRequired,MediaRequired,Sort,TextCodes")] Assignment assignment)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,TextRequired,MediaRequired,Sort,TextCodes")] Assignment assignment, int questId)
         {
             if (ModelState.IsValid)
             {
+                assignment.Quest = db.Quests.Where(item => item.Id == questId).FirstOrDefault();
                 db.Assignments.Add(assignment);
                 db.SaveChanges();
                 return RedirectToAction("Index");

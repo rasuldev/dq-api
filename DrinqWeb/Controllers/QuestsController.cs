@@ -36,6 +36,11 @@ namespace DrinqWeb.Controllers
             return View(quest);
         }
 
+        public ActionResult AddAssignment(int qId)
+        {
+            return RedirectToAction("Create", "Assignments", new { questId = qId });
+        }
+
         // GET: Quests/Create
         public ActionResult Create()
         {

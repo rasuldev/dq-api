@@ -19,56 +19,57 @@
             <dt>
                 @Html.DisplayNameFor(model => model.Title)
             </dt>
-    
+
             <dd>
                 @Html.DisplayFor(model => model.Title)
             </dd>
-    
+
             <dt>
                 @Html.DisplayNameFor(model => model.Description)
             </dt>
-    
+
             <dd>
                 @Html.DisplayFor(model => model.Description)
             </dd>
-    
+
             <dt>
                 @Html.DisplayNameFor(model => model.MaxTime)
             </dt>
-    
+
             <dd>
                 @Html.DisplayFor(model => model.MaxTime)
             </dd>
-    
+
             <dt>
                 @Html.DisplayNameFor(model => model.IsPublished)
             </dt>
-    
+
             <dd>
                 @Html.DisplayFor(model => model.IsPublished)
             </dd>
-    
+
             <dt>
                 @Html.DisplayNameFor(model => model.Sort)
             </dt>
-    
+
             <dd>
                 @Html.DisplayFor(model => model.Sort)
             </dd>
-    
+
             <dt>
                 @Html.DisplayNameFor(model => model.IsDeleted)
             </dt>
-    
+
             <dd>
                 @Html.DisplayFor(model => model.IsDeleted)
             </dd>
-    
+
         </dl>
     </div>
     <p>
         @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to List", "Index")|
+        @Html.ActionLink("Add Assignment", "AddAssignment", new { qId = Model.Id }) |
     </p>
 </body>
 </html>

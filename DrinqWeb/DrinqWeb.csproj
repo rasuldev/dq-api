@@ -208,7 +208,6 @@
     <Compile Include="Models\CodeFirstModels\UserAssignment.cs" />
     <Compile Include="Models\CodeFirstModels\UserAssignmentAcceptedStatus.cs" />
     <Compile Include="Models\CodeFirstModels\UserAssignmentStatus.cs" />
-    <Compile Include="Models\CodeFirstModels\UserInfo.cs" />
     <Compile Include="Models\CodeFirstModels\UserQuest.cs" />
     <Compile Include="Models\CodeFirstModels\Quest.cs" />
     <Compile Include="Models\CodeFirstModels\UserQuestStatus.cs" />
