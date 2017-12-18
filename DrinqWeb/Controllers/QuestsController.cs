@@ -47,7 +47,7 @@ namespace DrinqWeb.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,MaxTime,Name,IsPublished,Sort,IsDeleted")] Quest quest)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,MaxTime,IsPublished,Sort,IsDeleted")] Quest quest)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace DrinqWeb.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,MaxTime,Name,IsPublished,Sort,IsDeleted")] Quest quest)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,MaxTime,IsPublished,Sort,IsDeleted")] Quest quest)
         {
             if (ModelState.IsValid)
             {
