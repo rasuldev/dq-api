@@ -9,10 +9,11 @@ namespace DrinqWeb.Models.CodeFirstModels
     public class Assignment
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
         public string Description { get; set; }
-        public bool IsAnswerText { get; set; }
-        public bool isAnswerPicture { get; set; }
-        public List<string> ValidTextAnswers { get; set; }
+        public bool TextRequired { get; set; }
+        public bool MediaRequired { get; set; }
+        public int Sort { get; set; }
+        public List<string> TextCodes { get; set; }
     }
 }

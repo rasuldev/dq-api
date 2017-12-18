@@ -26,6 +26,7 @@ namespace DrinqWeb.Models
         public DbSet<UserAssignment> UserAssignments;
         public DbSet<UserQuest> UserQuests;
         public DbSet<VerificationItem> VerificationItems;
+        public DbSet<Media> Media;
 
         public ApplicationDbContext()
             : base("DataEntities", throwIfV1Schema: false)
@@ -44,6 +45,9 @@ namespace DrinqWeb.Models
 
             modelBuilder.Entity<VerificationItem>()
                 .HasRequired(vi => vi.UserAssignment);
+
+            modelBuilder.Entity<Media>()
+                .HasRequired(m => m.Assignment);
         }
 
         public static ApplicationDbContext Create()
