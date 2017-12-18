@@ -178,6 +178,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\QuestController.cs" />
     <Compile Include="Controllers\AssignmentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -189,17 +190,9 @@
     <Compile Include="Migrations\201712180450428_InitialCreate.Designer.cs">
       <DependentUpon>201712180450428_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201712180455015_AddDbMigration.cs" />
-    <Compile Include="Migrations\201712180455015_AddDbMigration.Designer.cs">
-      <DependentUpon>201712180455015_AddDbMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201712180513041_AddDbMigration1.cs" />
-    <Compile Include="Migrations\201712180513041_AddDbMigration1.Designer.cs">
-      <DependentUpon>201712180513041_AddDbMigration1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201712180620448_AddDbMigration2.cs" />
-    <Compile Include="Migrations\201712180620448_AddDbMigration2.Designer.cs">
-      <DependentUpon>201712180620448_AddDbMigration2.cs</DependentUpon>
+    <Compile Include="Migrations\201712180856277_AddDbMigration.cs" />
+    <Compile Include="Migrations\201712180856277_AddDbMigration.Designer.cs">
+      <DependentUpon>201712180856277_AddDbMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -215,6 +208,7 @@
     <Compile Include="Models\CodeFirstModels\VerificationItemStatus.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\StartQuestResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -299,14 +293,8 @@
     <EmbeddedResource Include="Migrations\201712180450428_InitialCreate.resx">
       <DependentUpon>201712180450428_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712180455015_AddDbMigration.resx">
-      <DependentUpon>201712180455015_AddDbMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712180513041_AddDbMigration1.resx">
-      <DependentUpon>201712180513041_AddDbMigration1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712180620448_AddDbMigration2.resx">
-      <DependentUpon>201712180620448_AddDbMigration2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201712180856277_AddDbMigration.resx">
+      <DependentUpon>201712180856277_AddDbMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
