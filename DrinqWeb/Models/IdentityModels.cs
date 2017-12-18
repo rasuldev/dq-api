@@ -21,12 +21,12 @@ namespace DrinqWeb.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Assignment> Assignments;
-        public DbSet<Quest> Quests;
-        public DbSet<UserAssignment> UserAssignments;
-        public DbSet<UserQuest> UserQuests;
-        public DbSet<VerificationItem> VerificationItems;
-        public DbSet<Media> Media;
+        public DbSet<Assignment> Assignments { get; set; }
+        public DbSet<Quest> Quests { get; set; }
+        public DbSet<UserAssignment> UserAssignments { get; set; }
+        public DbSet<UserQuest> UserQuests { get; set; }
+        public DbSet<VerificationItem> VerificationItems { get; set; }
+        public DbSet<Media> Media { get; set; }
 
         public ApplicationDbContext()
             : base("DataEntities", throwIfV1Schema: false)
