@@ -41,6 +41,9 @@ namespace DrinqWeb.Models
 
             modelBuilder.Entity<UserAssignment>()
                 .HasRequired(a => a.Assignment);
+
+            modelBuilder.Entity<VerificationItem>()
+                .HasRequired(vi => vi.UserAssignment);
         }
 
         public static ApplicationDbContext Create()
