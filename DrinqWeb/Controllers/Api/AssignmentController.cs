@@ -72,7 +72,7 @@ namespace DrinqWeb.Controllers.Api
             int currentUserAssignmentDuration = (DateTime.Now - currentUserAssignment.UserQuest.StartDate).Minutes;
             if (currentUserAssignmentDuration > currentUserAssignment.UserQuest.Quest.MaxTime)
             {
-                DismissCurrentQuest(db, currentUserAssignment.UserQuest);
+                QuestTools.CancelQuest(currentUserAssignment.UserQuest);
                 return Ok("Quest time is expired.");
             }
             // -- Check user quest duration
@@ -157,25 +157,6 @@ namespace DrinqWeb.Controllers.Api
             //      WRONG-> currentAssignment.TextAccepted = Declined;
             //              status = Declined;
             //  return jsonStr;
-        }
-
-        public void DismissCurrentQuest(ApplicationDbContext db, UserQuest userQuest)
-        {
-            var userAssignments = db.UserAssignments.Where(item =>
-                item.UserQuest.Id == userQuest.Id &&
-                item.UserId == userQuest.UserId &&
-                item.Status != UserAssignmentStatus.Completed &&
-                item.Status != UserAssignmentStatus.Failed).ToList();
-            foreach (var assignment in userAssignments)
-            {
-                assignment.Status = UserAssignmentStatus.Failed;
-                db.Entry(assignment).State = System.Data.Entity.EntityState.Modified;
-            }
-
-            userQuest.Status = UserQuestStatus.Failed;
-            userQuest.EndDate = DateTime.Now;
-            db.Entry(userQuest).State = System.Data.Entity.EntityState.Modified;
-            db.SaveChanges();
         }
     }
 }

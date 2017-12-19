@@ -95,21 +95,7 @@ namespace DrinqWeb.Controllers.Api
             UserQuest userQuest = db.UserQuests.Where(item => item.UserId == user.Id && item.Status == UserQuestStatus.InProgress).FirstOrDefault();
             if (userQuest != null)
             {
-                var userAssignments = db.UserAssignments.Where(item =>
-                item.UserQuest.Id == userQuest.Id &&
-                item.UserId == userQuest.UserId &&
-                item.Status != UserAssignmentStatus.Completed &&
-                item.Status != UserAssignmentStatus.Failed).ToList();
-                foreach (var assignment in userAssignments)
-                {
-                    assignment.Status = UserAssignmentStatus.Failed;
-                    db.Entry(assignment).State = System.Data.Entity.EntityState.Modified;
-                }
-
-                userQuest.Status = UserQuestStatus.Failed;
-                userQuest.EndDate = DateTime.Now;
-                db.Entry(userQuest).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+                QuestTools.CancelQuest(userQuest);
                 return Ok("Текущее задание отменено.");
             }
             else
