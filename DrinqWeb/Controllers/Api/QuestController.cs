@@ -59,10 +59,10 @@ namespace DrinqWeb.Controllers.Api
 
                 userAssignments.Add(ua);
             }
-            // first assignment
+            // activate first assignment
             userAssignments[0].Status = UserAssignmentStatus.InProgress;
             userAssignments[0].StartDate = DateTime.Now;
-            // -- first assignment
+            // -- activate first assignment
 
             db.UserAssignments.AddRange(userAssignments);
             db.SaveChanges();

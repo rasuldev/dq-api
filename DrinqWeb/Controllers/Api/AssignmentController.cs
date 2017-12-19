@@ -73,7 +73,7 @@ namespace DrinqWeb.Controllers.Api
             if (currentUserAssignmentDuration > currentUserAssignment.UserQuest.Quest.MaxTime)
             {
                 QuestTools.CancelQuest(currentUserAssignment.UserQuest);
-                return Ok("Quest time is expired.");
+                return Ok("Время, отведенное на выполнение квеста, закончилось.");
             }
             // -- Check user quest duration
 
@@ -105,7 +105,7 @@ namespace DrinqWeb.Controllers.Api
                     currentUserAssignment.TextCodeAccepted = UserAssignmentAcceptedStatus.Accepted;
                     currentUserAssignment.Status = UserAssignmentStatus.Completed;
                     currentUserAssignment.EndDate = DateTime.Now;
-                    // check media (not alpha)
+                    // todo: check media (not alpha)
                     status = Status.Completed;
                     nextUserAssignment = GetNextUserAssignment(currentUserAssignment, db);
                     if (nextUserAssignment == null)
@@ -137,10 +137,6 @@ namespace DrinqWeb.Controllers.Api
             });
 
             return Ok(jsonResponse);
-            // CUQD - Check user quest duration
-            //      WRONG -> set quest status to Failed.
-            //               SaveChanges.
-            //               Return.
 
             //  Check user
             //  Check currentAssignment
