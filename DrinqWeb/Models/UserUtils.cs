@@ -6,7 +6,7 @@ using System.Web;
 
 namespace DrinqWeb.Models
 {
-    public class Utils
+    public class UserUtils
     {
         public static string GetAuthorizationStringFromHeader(HttpRequestMessage req)
         {

@@ -16,7 +16,7 @@ namespace DrinqWeb.Controllers.Api
         public IHttpActionResult Get()
         {
             ApplicationDbContext db = new ApplicationDbContext();
-            ApplicationUser user = Utils.GetUserById(Utils.GetAuthorizationStringFromHeader(Request));
+            ApplicationUser user = UserUtils.GetUserById(UserUtils.GetAuthorizationStringFromHeader(Request));
             if (user == null)
                 return Unauthorized();
 
@@ -60,7 +60,7 @@ namespace DrinqWeb.Controllers.Api
         public IHttpActionResult CheckText([FromBody] string codes)
         {
             ApplicationDbContext db = new ApplicationDbContext();
-            ApplicationUser user = Utils.GetUserById(Utils.GetAuthorizationStringFromHeader(Request));
+            ApplicationUser user = UserUtils.GetUserById(UserUtils.GetAuthorizationStringFromHeader(Request));
             if (user == null)
                 return Unauthorized();
 
