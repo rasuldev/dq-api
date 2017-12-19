@@ -111,6 +111,7 @@ namespace DrinqWeb.Controllers.Api
                     if (nextUserAssignment == null)
                     {
                         currentUserAssignment.UserQuest.Status = UserQuestStatus.Completed;
+                        currentUserAssignment.UserQuest.EndDate = DateTime.Now;
                         responseNextAssignment = null;
                     }
                     else
@@ -172,6 +173,7 @@ namespace DrinqWeb.Controllers.Api
             }
 
             userQuest.Status = UserQuestStatus.Failed;
+            userQuest.EndDate = DateTime.Now;
             db.Entry(userQuest).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
         }
