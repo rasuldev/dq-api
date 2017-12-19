@@ -178,6 +178,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\AssignmentController.cs" />
     <Compile Include="Controllers\Api\QuestController.cs" />
     <Compile Include="Controllers\AssignmentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -186,13 +187,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201712180450428_InitialCreate.cs" />
-    <Compile Include="Migrations\201712180450428_InitialCreate.Designer.cs">
-      <DependentUpon>201712180450428_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201712180856277_AddDbMigration.cs" />
-    <Compile Include="Migrations\201712180856277_AddDbMigration.Designer.cs">
-      <DependentUpon>201712180856277_AddDbMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201712190641538_Init.cs" />
+    <Compile Include="Migrations\201712190641538_Init.Designer.cs">
+      <DependentUpon>201712190641538_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -208,6 +205,7 @@
     <Compile Include="Models\CodeFirstModels\VerificationItemStatus.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\AssignmentResponseModel.cs" />
     <Compile Include="Models\StartQuestResponseModel.cs" />
     <Compile Include="Models\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -291,11 +289,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201712180450428_InitialCreate.resx">
-      <DependentUpon>201712180450428_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712180856277_AddDbMigration.resx">
-      <DependentUpon>201712180856277_AddDbMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201712190641538_Init.resx">
+      <DependentUpon>201712190641538_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

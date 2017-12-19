@@ -20,14 +20,14 @@ namespace DrinqWeb.Controllers.Api
             if (user == null)
                 return Unauthorized();
 
-            UserAssignment userAssignment = GetCurrentUserAssignment(db, user.Id);
+            var curUserAssignment = GetCurrentUserAssignment(db, user.Id);
+            Assignment currentAssignment = curUserAssignment == null ? null : curUserAssignment.Assignment;
 
-            if (userAssignment == null)
+            if (currentAssignment == null)
                 return BadRequest("У Вас нет активных заданий.");
-            AssignmentResponseModel assignmentResponseModel = new AssignmentResponseModel(Status.Accepted, userAssignment.Assignment);
-            assignmentResponseModel.Assignment.TextCodes = null;
-            assignmentResponseModel.Assignment.Quest = null;
-            var json = JsonConvert.SerializeObject(assignmentResponseModel);
+
+            currentAssignment.TextCodes = null;
+            var json = JsonConvert.SerializeObject(currentAssignment);
             return Ok(json);
         }
 
@@ -128,7 +128,8 @@ namespace DrinqWeb.Controllers.Api
             db.SaveChanges();
 
             // RESPONSE
-            responseNextAssignment.TextCodes = null;
+            if (responseNextAssignment != null)
+                responseNextAssignment.TextCodes = null;
             jsonResponse = JsonConvert.SerializeObject(new AssignmentResponseModel(status, responseNextAssignment), Formatting.Indented, new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
