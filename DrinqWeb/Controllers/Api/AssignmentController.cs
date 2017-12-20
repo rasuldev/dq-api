@@ -1,11 +1,14 @@
 ﻿using DrinqWeb.Models;
 using DrinqWeb.Models.CodeFirstModels;
+using DrinqWeb.Tools.Image;
+using DrinqWeb.Tools.Images;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace DrinqWeb.Controllers.Api
@@ -153,6 +156,16 @@ namespace DrinqWeb.Controllers.Api
             //      WRONG-> currentAssignment.TextAccepted = Declined;
             //              status = Declined;
             //  return jsonStr;
+        }
+
+        [HttpPost]
+        public IHttpActionResult Upload()
+        {
+            var imageFile = HttpContext.Current.Request.Files.Count > 0 ? HttpContext.Current.Request.Files[0] : null;
+            ImageFactory imageFactory = new ImageFactory();
+            imageFactory.SaveImage(imageFile, ImageKind.VerificationItem);
+
+            return Ok();
         }
     }
 }
