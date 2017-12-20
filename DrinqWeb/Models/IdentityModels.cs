@@ -47,7 +47,7 @@ namespace DrinqWeb.Models
                 .HasRequired(vi => vi.UserAssignment);
 
             modelBuilder.Entity<Media>()
-                .HasRequired(m => m.Assignment);
+                .HasOptional(m => m.Assignment);
         }
 
         public static ApplicationDbContext Create()
