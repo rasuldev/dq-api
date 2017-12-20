@@ -1,13 +1,9 @@
 ﻿using DrinqWeb.Models;
 using DrinqWeb.Models.CodeFirstModels;
-using DrinqWeb.Tools.Image;
-using DrinqWeb.Tools.Images;
+using DrinqWeb.Tools.VerificationItem;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
@@ -161,9 +157,9 @@ namespace DrinqWeb.Controllers.Api
         [HttpPost]
         public IHttpActionResult Upload()
         {
-            var imageFile = HttpContext.Current.Request.Files.Count > 0 ? HttpContext.Current.Request.Files[0] : null;
-            ImageFactory imageFactory = new ImageFactory();
-            imageFactory.SaveImage(imageFile, ImageKind.VerificationItem);
+            var file = HttpContext.Current.Request.Files.Count > 0 ? HttpContext.Current.Request.Files[0] : null;
+            VerificationItemFactory itemFactory = new VerificationItemFactory();
+            itemFactory.SaveFile(file, FileKind.VerificationItem);
 
             return Ok();
         }

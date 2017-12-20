@@ -211,8 +211,8 @@
     <Compile Include="Models\UserUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Tools\Images\ImageFactory.cs" />
-    <Compile Include="Tools\Images\ImageKind.cs" />
+    <Compile Include="Tools\VerificationItem\VerificationItemFactory.cs" />
+    <Compile Include="Tools\VerificationItem\FileKind.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
