@@ -1,6 +1,6 @@
 ﻿using DrinqWeb.Models;
 using DrinqWeb.Models.CodeFirstModels;
-using DrinqWeb.Tools.VerificationItem;
+using DrinqWeb.Tools.MediaTools;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -158,8 +158,8 @@ namespace DrinqWeb.Controllers.Api
         public IHttpActionResult Upload()
         {
             var file = HttpContext.Current.Request.Files.Count > 0 ? HttpContext.Current.Request.Files[0] : null;
-            VerificationItemFactory itemFactory = new VerificationItemFactory();
-            itemFactory.SaveFile(file, FileKind.VerificationItem);
+            MediaFactory mediaFactory = new MediaFactory();
+            mediaFactory.SaveFile(file, FileKind.VerificationItem);
 
             return Ok();
         }
