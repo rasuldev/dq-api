@@ -159,8 +159,11 @@ namespace DrinqWeb.Controllers.Api
         {
             var file = HttpContext.Current.Request.Files.Count > 0 ? HttpContext.Current.Request.Files[0] : null;
             MediaFactory mediaFactory = new MediaFactory();
-            mediaFactory.SaveFile(file, FileKind.VerificationItem);
-
+            string[] param = mediaFactory.SaveFile(file, FileKind.VerificationItem);
+            string newFileName = param[0];
+            string dirPath = param[1];
+            Media media = mediaFactory.CreateMedia(newFileName, dirPath);
+            mediaFactory.AddMediaToDb(media);
             return Ok();
         }
     }

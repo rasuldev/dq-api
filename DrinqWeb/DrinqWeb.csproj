@@ -199,6 +199,10 @@
     <Compile Include="Migrations\201712201236574_RenameMediaModel.Designer.cs">
       <DependentUpon>201712201236574_RenameMediaModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712201713427_OptionalAssignment.cs" />
+    <Compile Include="Migrations\201712201713427_OptionalAssignment.Designer.cs">
+      <DependentUpon>201712201713427_OptionalAssignment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CodeFirstModels\Assignment.cs" />
@@ -222,6 +226,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Tools\MediaTools\FileKind.cs" />
     <Compile Include="Tools\MediaTools\MediaFactory.cs" />
+    <Compile Include="Tools\VerificationItemTools\VerificationItemFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -309,6 +314,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712201236574_RenameMediaModel.resx">
       <DependentUpon>201712201236574_RenameMediaModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712201713427_OptionalAssignment.resx">
+      <DependentUpon>201712201713427_OptionalAssignment.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

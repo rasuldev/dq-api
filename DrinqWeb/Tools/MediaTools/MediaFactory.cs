@@ -1,4 +1,5 @@
-﻿using DrinqWeb.Models.CodeFirstModels;
+﻿using DrinqWeb.Models;
+using DrinqWeb.Models.CodeFirstModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,26 +21,61 @@ namespace DrinqWeb.Tools.MediaTools
                 return MediaType.Video;
             return MediaType.Undefined;
         }
-        public void SaveFile(HttpPostedFile verificationFile, FileKind kind)
+
+        /*
+            return 2 values:
+            1) new file name;
+            2) short directory path.
+        */
+        public string[] SaveFile(HttpPostedFile verificationFile, FileKind kind)
         {
-            string fileName = GetPath(kind) + GenerateUniqueId() + verificationFile.FileName;
-            verificationFile.SaveAs(fileName);
+            string generatedFileName = GenerateUniqueId() + verificationFile.FileName;
+            string[] pathes = GetPath(kind);
+            string dirPath = pathes[0];
+            string fullDirPath = pathes[1];
+            string fullFilePath = fullDirPath + generatedFileName; ;
+            verificationFile.SaveAs(fullFilePath);
+            return new string[] { generatedFileName, dirPath };
         }
 
-        public string GetPath(FileKind kind)
+        public Media CreateMedia(string filename, string fullPath)
+        {
+            Media media = new Media();
+            media.Title = filename;
+            media.MediaExt = filename.Split('.').Last();
+            media.MediaType = GetMediaType(filename);
+            media.MediaFile = fullPath;
+            return media;
+        }
+
+        public void AddMediaToDb(Media media)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                db.Media.Add(media);
+                db.SaveChanges();
+            }
+        }
+
+        /*
+            return 2 pathes:
+            1) short directory path (for media model);
+            2) full directory path.
+        */
+        public string[] GetPath(FileKind kind)
         {
             string path = HttpContext.Current.Server.MapPath("~/files");
             switch (kind)
             {
                 case FileKind.VerificationItem:
-                    return $"{path}/items/";
+                    return new string[] { "/files/items/", $"{path}/items/" };
                 default:
-                    return $"{path}/";
+                    return new string[] { "/files/", path };
             }
         }
         public static string GenerateUniqueId()
         {
-            return $"item_{DateTime.Now:yyyy-MM-ddTHH-mm-ss-ff}_{Path.GetRandomFileName().Replace(".", "")}";
+            return $"media_{DateTime.Now:yyyy-MM-ddTHH-mm-ss-ff}_{Path.GetRandomFileName().Replace(".", "")}";
         }
     }
 }
