@@ -48,12 +48,13 @@ namespace DrinqWeb.Tools.MediaTools
             return media;
         }
 
-        public void AddMediaToDb(Media media)
+        public Media AddMediaToDb(Media media)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                db.Media.Add(media);
+                var addedMedia = db.Media.Add(media);
                 db.SaveChanges();
+                return addedMedia;
             }
         }
 

@@ -1,6 +1,8 @@
 ﻿using DrinqWeb.Models;
 using DrinqWeb.Models.CodeFirstModels;
+using DrinqWeb.Tools.AssignmentTools;
 using DrinqWeb.Tools.MediaTools;
+using DrinqWeb.Tools.VerificationItemTools;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -14,12 +16,13 @@ namespace DrinqWeb.Controllers.Api
         [HttpGet]
         public IHttpActionResult Get()
         {
+            AssignmentFactory assignmentFactory = new AssignmentFactory();
             ApplicationDbContext db = new ApplicationDbContext();
             ApplicationUser user = UserUtils.GetUserById(UserUtils.GetAuthorizationStringFromHeader(Request));
             if (user == null)
                 return Unauthorized();
 
-            var curUserAssignment = GetCurrentUserAssignment(db, user.Id);
+            var curUserAssignment = assignmentFactory.GetCurrentUserAssignment(db, user.Id);
             Assignment currentAssignment = curUserAssignment == null ? null : curUserAssignment.Assignment;
 
             if (currentAssignment == null)
@@ -30,25 +33,7 @@ namespace DrinqWeb.Controllers.Api
             return Ok(json);
         }
 
-        private UserAssignment GetCurrentUserAssignment(ApplicationDbContext db, string userId)
-        {
-            return db.UserAssignments.Include("Assignment.Quest").Include("UserQuest")
-                .Where(item => item.UserId == userId &&
-                    item.Status == UserAssignmentStatus.InProgress)
-                .FirstOrDefault();
-        }
 
-
-        private UserAssignment GetNextUserAssignment(UserAssignment currentUserAssignment, ApplicationDbContext db)
-        {
-            var nextAssignmentSortValue = currentUserAssignment.Assignment.Sort + 1;
-            return db.UserAssignments.Include("Assignment")
-                .Where(item =>
-                    item.UserId == currentUserAssignment.UserId &&
-                    item.Status == UserAssignmentStatus.NotAvailable &&
-                    item.Assignment.Sort == nextAssignmentSortValue)
-                .FirstOrDefault();
-        }
 
         public enum Status
         {
@@ -58,12 +43,13 @@ namespace DrinqWeb.Controllers.Api
         [HttpPost]
         public IHttpActionResult CheckText([FromBody] string codes)
         {
+            AssignmentFactory assignmentFactory = new AssignmentFactory();
             ApplicationDbContext db = new ApplicationDbContext();
             ApplicationUser user = UserUtils.GetUserById(UserUtils.GetAuthorizationStringFromHeader(Request));
             if (user == null)
                 return Unauthorized();
 
-            var currentUserAssignment = GetCurrentUserAssignment(db, user.Id);
+            var currentUserAssignment = assignmentFactory.GetCurrentUserAssignment(db, user.Id);
             if (currentUserAssignment == null)
                 return BadRequest("У Вас нет активного задания.");
 
@@ -106,7 +92,7 @@ namespace DrinqWeb.Controllers.Api
                     currentUserAssignment.EndDate = DateTime.Now;
                     // todo: check media (not alpha)
                     status = Status.Completed;
-                    nextUserAssignment = GetNextUserAssignment(currentUserAssignment, db);
+                    nextUserAssignment = assignmentFactory.GetNextUserAssignment(db, currentUserAssignment);
                     if (nextUserAssignment == null)
                     {
                         currentUserAssignment.UserQuest.Status = UserQuestStatus.Completed;
@@ -157,13 +143,28 @@ namespace DrinqWeb.Controllers.Api
         [HttpPost]
         public IHttpActionResult Upload()
         {
+            ApplicationUser user = UserUtils.GetUserById(UserUtils.GetAuthorizationStringFromHeader(Request));
+            if (user == null)
+                return Unauthorized();
+
             var file = HttpContext.Current.Request.Files.Count > 0 ? HttpContext.Current.Request.Files[0] : null;
+            if (file == null)
+                return BadRequest("Отсутствует файл.");
+
             MediaFactory mediaFactory = new MediaFactory();
+            VerificationItemFactory itemFactory = new VerificationItemFactory();
+            ApplicationDbContext db = new ApplicationDbContext();
+
             string[] param = mediaFactory.SaveFile(file, FileKind.VerificationItem);
             string newFileName = param[0];
             string dirPath = param[1];
+
             Media media = mediaFactory.CreateMedia(newFileName, dirPath);
-            mediaFactory.AddMediaToDb(media);
+            //var savedMedia = mediaFactory.AddMediaToDb(media);
+
+            VerificationItem item = itemFactory.CreateVerificationItem(db, media, user.Id);
+            itemFactory.AddVerificationItemToDb(db, item);
+
             return Ok();
         }
     }

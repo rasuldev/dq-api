@@ -187,21 +187,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201712190641538_Init.cs" />
-    <Compile Include="Migrations\201712190641538_Init.Designer.cs">
-      <DependentUpon>201712190641538_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201712201827004_Init.cs" />
+    <Compile Include="Migrations\201712201827004_Init.Designer.cs">
+      <DependentUpon>201712201827004_Init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201712201157483_AddMediaTypes.cs" />
-    <Compile Include="Migrations\201712201157483_AddMediaTypes.Designer.cs">
-      <DependentUpon>201712201157483_AddMediaTypes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201712201236574_RenameMediaModel.cs" />
-    <Compile Include="Migrations\201712201236574_RenameMediaModel.Designer.cs">
-      <DependentUpon>201712201236574_RenameMediaModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201712201713427_OptionalAssignment.cs" />
-    <Compile Include="Migrations\201712201713427_OptionalAssignment.Designer.cs">
-      <DependentUpon>201712201713427_OptionalAssignment.cs</DependentUpon>
+    <Compile Include="Migrations\201712201917309_i1.cs" />
+    <Compile Include="Migrations\201712201917309_i1.Designer.cs">
+      <DependentUpon>201712201917309_i1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -224,6 +216,7 @@
     <Compile Include="Models\UserUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tools\AssignmentTools\AssignmentFactory.cs" />
     <Compile Include="Tools\MediaTools\FileKind.cs" />
     <Compile Include="Tools\MediaTools\MediaFactory.cs" />
     <Compile Include="Tools\VerificationItemTools\VerificationItemFactory.cs" />
@@ -306,17 +299,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201712190641538_Init.resx">
-      <DependentUpon>201712190641538_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201712201827004_Init.resx">
+      <DependentUpon>201712201827004_Init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712201157483_AddMediaTypes.resx">
-      <DependentUpon>201712201157483_AddMediaTypes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712201236574_RenameMediaModel.resx">
-      <DependentUpon>201712201236574_RenameMediaModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712201713427_OptionalAssignment.resx">
-      <DependentUpon>201712201713427_OptionalAssignment.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201712201917309_i1.resx">
+      <DependentUpon>201712201917309_i1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

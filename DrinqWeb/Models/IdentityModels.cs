@@ -45,6 +45,8 @@ namespace DrinqWeb.Models
 
             modelBuilder.Entity<VerificationItem>()
                 .HasRequired(vi => vi.UserAssignment);
+            modelBuilder.Entity<VerificationItem>()
+                .HasRequired(vi => vi.Media);
 
             modelBuilder.Entity<Media>()
                 .HasOptional(m => m.Assignment);
