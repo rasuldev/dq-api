@@ -39,9 +39,13 @@ namespace DrinqWeb.Models
 
             modelBuilder.Entity<UserQuest>()
                 .HasRequired(q => q.Quest);
+            modelBuilder.Entity<UserQuest>()
+                .HasRequired(q => q.User);
 
             modelBuilder.Entity<UserAssignment>()
                 .HasRequired(a => a.Assignment);
+            modelBuilder.Entity<UserAssignment>()
+                .HasRequired(q => q.User);
 
             modelBuilder.Entity<VerificationItem>()
                 .HasRequired(vi => vi.UserAssignment);

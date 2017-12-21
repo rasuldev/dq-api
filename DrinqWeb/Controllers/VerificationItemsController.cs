@@ -144,7 +144,7 @@ namespace DrinqWeb.Controllers
                 db.Entry(verificationItem).State = EntityState.Modified;
                 db.SaveChanges();
                 AssignmentFactory aFactory = new AssignmentFactory();
-                aFactory.SetNextUserAssignmentIfFinished(db, aFactory.GetCurrentUserAssignment(db, verificationItem.UserAssignment.UserId), verificationItem.UserAssignment.UserId);
+                aFactory.SetNextUserAssignmentIfFinished(db, aFactory.GetCurrentUserAssignment(db, verificationItem.UserAssignment.User.Id), verificationItem.UserAssignment.User.Id);
                 return RedirectToAction("Index");
             }
             return View(verificatedItem);

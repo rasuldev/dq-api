@@ -62,7 +62,7 @@ namespace DrinqWeb.Controllers.Api
             int currentUserAssignmentDuration = (DateTime.Now - currentUserAssignment.UserQuest.StartDate).Minutes;
             if (currentUserAssignmentDuration > currentUserAssignment.UserQuest.Quest.MaxTime)
             {
-                QuestTools.CancelQuest(currentUserAssignment.UserQuest);
+                QuestTools.CancelQuest(db, currentUserAssignment.UserQuest);
                 return Ok("Время, отведенное на выполнение квеста, закончилось.");
             }
             // -- Check user quest duration

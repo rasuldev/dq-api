@@ -19,7 +19,7 @@ namespace DrinqWeb.Tools.AssignmentTools
         public UserAssignment GetCurrentUserAssignment(ApplicationDbContext db, string userId)
         {
             return db.UserAssignments.Include("Assignment.Quest").Include("UserQuest")
-                .Where(item => item.UserId == userId && item.Status == UserAssignmentStatus.InProgress)
+                .Where(item => item.User.Id == userId && item.Status == UserAssignmentStatus.InProgress)
                 .FirstOrDefault();
         }
 
@@ -28,7 +28,7 @@ namespace DrinqWeb.Tools.AssignmentTools
             var nextAssignmentSortValue = currentUserAssignment.Assignment.Sort + 1;
             return db.UserAssignments.Include("Assignment")
                 .Where(item =>
-                    item.UserId == currentUserAssignment.UserId &&
+                    item.User.Id == currentUserAssignment.User.Id &&
                     item.Status == UserAssignmentStatus.NotAvailable &&
                     item.Assignment.Sort == nextAssignmentSortValue)
                 .FirstOrDefault();

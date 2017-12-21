@@ -28,7 +28,7 @@ namespace DrinqWeb.Controllers.Api
             if (quest.IsDeleted)
                 return BadRequest("Квест удален.");
 
-            bool theOnlyQuestOfUser = db.UserQuests.Where(item => item.UserId == user.Id && item.Status == UserQuestStatus.InProgress).ToList().Count == 0 ? true : false;
+            bool theOnlyQuestOfUser = db.UserQuests.Where(item => item.User.Id == user.Id && item.Status == UserQuestStatus.InProgress).ToList().Count == 0 ? true : false;
             if (!theOnlyQuestOfUser)
                 return BadRequest("У Вас уже есть активный квест.");
             // TODO: Validation expressions
@@ -40,7 +40,7 @@ namespace DrinqWeb.Controllers.Api
             uq.StartDate = DateTime.Now;
             uq.EndDate = null;
             uq.Status = UserQuestStatus.InProgress;
-            uq.UserId = user.Id;
+            uq.User = db.Users.Find(user.Id);
             var uqAdded = db.UserQuests.Add(uq);
             db.SaveChanges();
 
@@ -50,7 +50,7 @@ namespace DrinqWeb.Controllers.Api
             {
                 ua = new UserAssignment();
                 ua.Status = UserAssignmentStatus.NotAvailable;
-                ua.UserId = user.Id;
+                ua.User = db.Users.Find(user.Id);
                 ua.UserQuest = uqAdded;
                 ua.Assignment = item;
                 ua.StartDate = null;
@@ -74,6 +74,7 @@ namespace DrinqWeb.Controllers.Api
             StartQuestResponseModel responseModel = new StartQuestResponseModel();
             responseModel.UserQuest = uq;
             responseModel.Assignment = firstUserAssignment.Assignment;
+            responseModel.UserQuest.User = null;
 
             var outputJson = JsonConvert.SerializeObject(responseModel, Formatting.Indented, new JsonSerializerSettings
             {
@@ -91,10 +92,10 @@ namespace DrinqWeb.Controllers.Api
             if (user == null)
                 return Unauthorized();
 
-            UserQuest userQuest = db.UserQuests.Where(item => item.UserId == user.Id && item.Status == UserQuestStatus.InProgress).FirstOrDefault();
+            UserQuest userQuest = db.UserQuests.Include("Quest").Where(item => item.User.Id == user.Id && item.Status == UserQuestStatus.InProgress).FirstOrDefault();
             if (userQuest != null)
             {
-                QuestTools.CancelQuest(userQuest);
+                QuestTools.CancelQuest(db, userQuest);
                 return Ok("Текущее задание отменено.");
             }
             else

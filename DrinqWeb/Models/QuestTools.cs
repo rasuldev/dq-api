@@ -8,22 +8,20 @@ namespace DrinqWeb.Models
 {
     public class QuestTools
     {
-        public static void CancelQuest(UserQuest userQuest)
+        public static void CancelQuest(ApplicationDbContext context, UserQuest userQuest)
         {
-            ApplicationDbContext context = new ApplicationDbContext();
-            CancelAllAssignments(userQuest);
+            CancelAllAssignments(context, userQuest);
             userQuest.Status = UserQuestStatus.Failed;
             userQuest.EndDate = DateTime.Now;
             context.Entry(userQuest).State = System.Data.Entity.EntityState.Modified;
             context.SaveChanges();
         }
 
-        public static void CancelAllAssignments(UserQuest userQuest)
+        public static void CancelAllAssignments(ApplicationDbContext context, UserQuest userQuest)
         {
-            ApplicationDbContext context = new ApplicationDbContext();
             var userAssignments = context.UserAssignments.Where(item =>
                 item.UserQuest.Id == userQuest.Id &&
-                item.UserId == userQuest.UserId &&
+                item.User.Id == userQuest.User.Id &&
                 item.Status != UserAssignmentStatus.Completed &&
                 item.Status != UserAssignmentStatus.Failed).ToList();
             foreach (var assignment in userAssignments)

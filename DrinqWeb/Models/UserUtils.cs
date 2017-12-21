@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
@@ -22,7 +23,7 @@ namespace DrinqWeb.Models
             if (Id.Length < 3)
                 return null;
             using (ApplicationDbContext db = new ApplicationDbContext())
-                return db.Users.Where(e => e.Id == Id).FirstOrDefault(); ;
+                return db.Users.AsNoTracking().Where(user => user.Id == Id).FirstOrDefault(); //.Include("Logins.").Include("Claims").Include("Roles")
         }
 
     }
