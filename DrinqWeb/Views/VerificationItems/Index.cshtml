@@ -1,0 +1,76 @@
+﻿@model IEnumerable<DrinqWeb.Models.CodeFirstModels.VerificationItem>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IncomingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VerifiedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VerifiedById)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Message)
+            </th>
+            <th>
+                Verification Item
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncomingDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VerifiedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VerifiedById)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message)
+                </td>
+                <td>
+                    @{
+                        var media = item.Media;
+                        if (media.MediaType == DrinqWeb.Models.CodeFirstModels.MediaType.Image)
+                        {
+                            <text><img width="120" height="160" src="@media.MediaFile@media.Title " /></text>
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                </td>
+            </tr>
+                        }
+
+    </table>
+</body>
+</html>

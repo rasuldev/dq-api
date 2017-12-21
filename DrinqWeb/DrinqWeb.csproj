@@ -184,6 +184,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\QuestsController.cs" />
+    <Compile Include="Controllers\VerificationItemsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -287,6 +288,11 @@
     <Content Include="Views\Assignments\Details.cshtml" />
     <Content Include="Views\Assignments\Edit.cshtml" />
     <Content Include="Views\Assignments\Index.cshtml" />
+    <Content Include="Views\VerificationItems\Create.cshtml" />
+    <Content Include="Views\VerificationItems\Delete.cshtml" />
+    <Content Include="Views\VerificationItems\Details.cshtml" />
+    <Content Include="Views\VerificationItems\Edit.cshtml" />
+    <Content Include="Views\VerificationItems\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

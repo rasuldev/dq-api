@@ -1,0 +1,72 @@
+﻿@model DrinqWeb.Models.CodeFirstModels.VerificationItem
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>VerificationItem</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.IncomingDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IncomingDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.VerifiedDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.VerifiedDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.VerifiedById)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.VerifiedById)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Message)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Message)
+            </dd>
+
+            <dd>
+                @Html.EditorFor(model => Model.Message)
+                @Html.EditorFor(model => model.Message)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Accept", "Accept", new { Id = Model.Id, message = "aaa" })|
+        @Html.ActionLink("Decline", "Decline", new { Id = Model.Id, message = Model.Message })|
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

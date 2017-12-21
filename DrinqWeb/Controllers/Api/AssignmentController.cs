@@ -167,11 +167,14 @@ namespace DrinqWeb.Controllers.Api
 
             // check for exist
             var currentUserAssignmentId = assignmentFactory.GetCurrentUserAssignment(db, user.Id).Id;
-            var currentUserAssignmentVerificationItem = db.VerificationItems.Where(vi => vi.UserAssignment.Id == currentUserAssignmentId).FirstOrDefault();
-            if (currentUserAssignmentVerificationItem.Status == VerificationItemStatus.Accepted)
-                return BadRequest("Ваш ответ уже был принят администратором.");
-            if (currentUserAssignmentVerificationItem.Status == VerificationItemStatus.NotVerified)
-                return BadRequest("Ваш предыдущий ответ еще не был оценен.");
+            var currentUserAssignmentVerificationItem = db.VerificationItems.Where(vi => vi.UserAssignment.Id == currentUserAssignmentId).OrderByDescending(key => key.IncomingDate).FirstOrDefault();
+            if (currentUserAssignmentVerificationItem != null)
+            {
+                if (currentUserAssignmentVerificationItem.Status == VerificationItemStatus.Accepted)
+                    return BadRequest("Ваш ответ уже был принят администратором.");
+                if (currentUserAssignmentVerificationItem.Status == VerificationItemStatus.NotVerified)
+                    return BadRequest("Ваш предыдущий ответ еще не был оценен.");
+            }
             // --
 
 
