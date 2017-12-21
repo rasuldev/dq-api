@@ -128,6 +128,18 @@ namespace DrinqWeb.Controllers
                 verificationItem.Message = verificatedItem.Message;
                 verificationItem.VerifiedById = User.Identity.GetUserId();
                 verificationItem.VerifiedDate = DateTime.Now;
+                switch (verificatedItem.Status)
+                {
+                    case VerificationItemStatus.Accepted:
+                        verificationItem.UserAssignment.MediaAccepted = UserAssignmentAcceptedStatus.Accepted;
+                        break;
+                    case VerificationItemStatus.Declined:
+                        verificationItem.UserAssignment.MediaAccepted = UserAssignmentAcceptedStatus.Declined;
+                        break;
+                    case VerificationItemStatus.NotVerified:
+                        verificationItem.UserAssignment.MediaAccepted = UserAssignmentAcceptedStatus.Verifying;
+                        break;
+                }
                 db.Entry(verificationItem).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
