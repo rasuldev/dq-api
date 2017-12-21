@@ -1,5 +1,6 @@
 ﻿using DrinqWeb.Models;
 using DrinqWeb.Models.CodeFirstModels;
+using DrinqWeb.Tools.QuestTools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,6 @@ namespace DrinqWeb.Tools.AssignmentTools
                 .FirstOrDefault();
         }
 
-
         public UserAssignment GetNextUserAssignment(ApplicationDbContext db, UserAssignment currentUserAssignment)
         {
             var nextAssignmentSortValue = currentUserAssignment.Assignment.Sort + 1;
@@ -38,7 +38,8 @@ namespace DrinqWeb.Tools.AssignmentTools
         {
             userAssignment.Status = UserAssignmentStatus.InProgress;
             userAssignment.StartDate = DateTime.Now;
-
+            db.Entry(userAssignment).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
         }
 
         public void CompleteAssigmentForUser(ApplicationDbContext db, UserAssignment UA, string userId)
@@ -47,6 +48,49 @@ namespace DrinqWeb.Tools.AssignmentTools
             UA.EndDate = DateTime.Now;
             db.Entry(UA).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
+        }
+
+        public bool IsAssignmentFinished(UserAssignment currentUA)
+        {
+            bool mediaFininished = true;
+            bool textCodeFinished = true;
+
+            if (currentUA.Assignment.MediaRequired == true)
+                if (currentUA.MediaAccepted != UserAssignmentAcceptedStatus.Accepted)
+                    mediaFininished = false;
+            if (currentUA.Assignment.TextRequired == true)
+                if (currentUA.TextCodeAccepted != UserAssignmentAcceptedStatus.Accepted)
+                    textCodeFinished = false;
+
+            if (mediaFininished == true && textCodeFinished == true)
+                return true;
+            return false;
+
+        }
+
+        public UserAssignment SetNextUserAssignmentIfFinished(ApplicationDbContext db, UserAssignment currentUA, string userId)
+        {
+            QuestFactory questFactory = new QuestFactory();
+            if (IsAssignmentFinished(currentUA))
+            {
+                // finish current assignment
+                CompleteAssigmentForUser(db, currentUA, userId);
+
+                // set next assignment
+                var nextUA = GetNextUserAssignment(db, currentUA);
+                if (nextUA == null)
+                {
+                    // complete quest
+                    questFactory.CompleteUserQuest(db, currentUA.UserQuest, userId);
+                    return null;
+                }
+                else
+                {
+                    SetAssignmentForUser(db, nextUA, userId);
+                    return nextUA;
+                }
+            }
+            return currentUA;
         }
     }
 }

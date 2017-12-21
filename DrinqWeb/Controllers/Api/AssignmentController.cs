@@ -86,8 +86,6 @@ namespace DrinqWeb.Controllers.Api
                 status = Status.Wrong;
             // -- Check answers
 
-            // Get next assignment
-            UserAssignment nextUserAssignment = null;
             Assignment responseNextAssignment = null;
 
             switch (status)
@@ -95,38 +93,14 @@ namespace DrinqWeb.Controllers.Api
                 case Status.Accepted:
                     currentUserAssignment.TextCodeAccepted = UserAssignmentAcceptedStatus.Accepted;
 
-                    if (currentUserAssignment.Assignment.MediaRequired)
-                    {
-                        switch (currentUserAssignment.MediaAccepted)
-                        {
-                            case UserAssignmentAcceptedStatus.Accepted:
-                                // current assignment completed
-                                assignmentFactory.CompleteAssigmentForUser(db, currentUserAssignment, user.Id);
+                    var result = assignmentFactory.SetNextUserAssignmentIfFinished(db, currentUserAssignment, user.Id);
 
-                                // get next assignemnt if exists
-                                nextUserAssignment = assignmentFactory.GetNextUserAssignment(db, currentUserAssignment);
-                                if (nextUserAssignment == null)
-                                {
-                                    //quest completed
-                                    questFactory.CompleteUserQuest(db, currentUserAssignment.UserQuest, user.Id);
-                                }
-                                else
-                                {
-                                    // quest continue
-                                    assignmentFactory.SetAssignmentForUser(db, nextUserAssignment, user.Id);
-                                    responseNextAssignment = nextUserAssignment.Assignment;
-                                }
-                                break;
-                            default:
-                                // nothing
-                                break;
+                    if (result != null) // quest not completed
+                        if (result.Id != currentUserAssignment.Id) // assigment finished
+                        {
+                            status = Status.Completed;
+                            responseNextAssignment = result.Assignment;
                         }
-                    }
-                    else
-                    {
-                        // user assignment completed
-                        assignmentFactory.CompleteAssigmentForUser(db, currentUserAssignment, user.Id);
-                    }
 
                     break;
                 case Status.Wrong:

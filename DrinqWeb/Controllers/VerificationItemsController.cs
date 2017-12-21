@@ -10,6 +10,7 @@ using DrinqWeb.Models;
 using DrinqWeb.Models.CodeFirstModels;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
+using DrinqWeb.Tools.AssignmentTools;
 
 namespace DrinqWeb.Controllers
 {
@@ -142,6 +143,8 @@ namespace DrinqWeb.Controllers
                 }
                 db.Entry(verificationItem).State = EntityState.Modified;
                 db.SaveChanges();
+                AssignmentFactory aFactory = new AssignmentFactory();
+                aFactory.SetNextUserAssignmentIfFinished(db, aFactory.GetCurrentUserAssignment(db, verificationItem.UserAssignment.UserId), verificationItem.UserAssignment.UserId);
                 return RedirectToAction("Index");
             }
             return View(verificatedItem);
