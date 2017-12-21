@@ -107,7 +107,7 @@ namespace DrinqWeb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VerificationItem verificationItem = db.VerificationItems.Find(id);
+            VerificationItem verificationItem = db.VerificationItems.Include("Media").Where(item => item.Id == id).FirstOrDefault();
             if (verificationItem == null)
             {
                 return HttpNotFound();
