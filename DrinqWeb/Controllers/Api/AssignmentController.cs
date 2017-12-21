@@ -53,6 +53,9 @@ namespace DrinqWeb.Controllers.Api
             if (currentUserAssignment == null)
                 return BadRequest("У Вас нет активного задания.");
 
+            if (currentUserAssignment.TextCodeAccepted == UserAssignmentAcceptedStatus.Accepted)
+                return BadRequest("Ваш ответ уже прошел проверку.");
+
             // Check user quest duration
             int currentUserAssignmentDuration = (DateTime.Now - currentUserAssignment.UserQuest.StartDate).Minutes;
             if (currentUserAssignmentDuration > currentUserAssignment.UserQuest.Quest.MaxTime)
@@ -84,33 +87,47 @@ namespace DrinqWeb.Controllers.Api
             // Get next assignment
             UserAssignment nextUserAssignment = null;
             Assignment responseNextAssignment = null;
+
             switch (status)
             {
                 case Status.Accepted:
                     currentUserAssignment.TextCodeAccepted = UserAssignmentAcceptedStatus.Accepted;
-                    currentUserAssignment.Status = UserAssignmentStatus.Completed;
-                    currentUserAssignment.EndDate = DateTime.Now;
-                    // todo: check media (not alpha)
-                    status = Status.Completed;
-                    nextUserAssignment = assignmentFactory.GetNextUserAssignment(db, currentUserAssignment);
-                    if (nextUserAssignment == null)
+
+                    if (currentUserAssignment.Assignment.MediaRequired)
                     {
-                        currentUserAssignment.UserQuest.Status = UserQuestStatus.Completed;
-                        currentUserAssignment.UserQuest.EndDate = DateTime.Now;
-                        responseNextAssignment = null;
+                        switch (currentUserAssignment.MediaAccepted)
+                        {
+                            case UserAssignmentAcceptedStatus.Accepted:
+                                // current assignment completed
+                                status = Status.Completed;
+                                currentUserAssignment.EndDate = DateTime.Now;
+                                currentUserAssignment.Status = UserAssignmentStatus.Completed;
+
+                                // start next assignemnt if exists
+                                nextUserAssignment = assignmentFactory.GetNextUserAssignment(db, currentUserAssignment);
+                                nextUserAssignment.Status = UserAssignmentStatus.InProgress;
+                                nextUserAssignment.StartDate = DateTime.Now;
+                                responseNextAssignment = nextUserAssignment.Assignment;
+                                break;
+                            default:
+                                // nothing
+                                break;
+                        }
                     }
                     else
                     {
-                        nextUserAssignment.Status = UserAssignmentStatus.InProgress;
-                        nextUserAssignment.StartDate = DateTime.Now;
-                        responseNextAssignment = nextUserAssignment.Assignment;
+                        status = Status.Completed;
+                        currentUserAssignment.EndDate = DateTime.Now;
+                        currentUserAssignment.Status = UserAssignmentStatus.Completed;
+                        // completed
                     }
+
                     break;
                 case Status.Wrong:
                     currentUserAssignment.TextCodeAccepted = UserAssignmentAcceptedStatus.Declined;
                     break;
             }
-            // -- Get next assignment
+
             db.SaveChanges();
 
             // RESPONSE
