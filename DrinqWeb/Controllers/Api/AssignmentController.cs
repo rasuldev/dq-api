@@ -154,13 +154,24 @@ namespace DrinqWeb.Controllers.Api
             MediaFactory mediaFactory = new MediaFactory();
             VerificationItemFactory itemFactory = new VerificationItemFactory();
             ApplicationDbContext db = new ApplicationDbContext();
+            AssignmentFactory assignmentFactory = new AssignmentFactory();
+
+
+            // check for exist
+            var currentUserAssignmentId = assignmentFactory.GetCurrentUserAssignment(db, user.Id).Id;
+            var currentUserAssignmentVerificationItem = db.VerificationItems.Where(vi => vi.UserAssignment.Id == currentUserAssignmentId).FirstOrDefault();
+            if (currentUserAssignmentVerificationItem.Status == VerificationItemStatus.Accepted)
+                return BadRequest("Ваш ответ уже был принят администратором.");
+            if (currentUserAssignmentVerificationItem.Status == VerificationItemStatus.NotVerified)
+                return BadRequest("Ваш предыдущий ответ еще не был оценен.");
+            // --
+
 
             string[] param = mediaFactory.SaveFile(file, FileKind.VerificationItem);
             string newFileName = param[0];
             string dirPath = param[1];
 
             Media media = mediaFactory.CreateMedia(newFileName, dirPath);
-            //var savedMedia = mediaFactory.AddMediaToDb(media);
 
             VerificationItem item = itemFactory.CreateVerificationItem(db, media, user.Id);
             itemFactory.AddVerificationItemToDb(db, item);
