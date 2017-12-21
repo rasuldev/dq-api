@@ -101,5 +101,12 @@ namespace DrinqWeb.Controllers.Api
             else
                 return BadRequest("У данного пользователя нет текущих заданий.");
         }
+
+        [HttpGet]
+        public IHttpActionResult Get()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            return Ok(JsonConvert.SerializeObject(db.Quests.ToList()));
+        }
     }
 }
