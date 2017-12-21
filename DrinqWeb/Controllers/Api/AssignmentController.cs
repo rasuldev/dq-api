@@ -94,14 +94,16 @@ namespace DrinqWeb.Controllers.Api
                     currentUserAssignment.TextCodeAccepted = UserAssignmentAcceptedStatus.Accepted;
 
                     var result = assignmentFactory.SetNextUserAssignmentIfFinished(db, currentUserAssignment, user.Id);
-
-                    if (result != null) // quest not completed
-                        if (result.Id != currentUserAssignment.Id) // assigment finished
+                    if (result == null) // квест закончился (нет следующего задания)
+                        status = Status.Completed;
+                    else
+                    {
+                        if (result.Id != currentUserAssignment.Id) // следующее задание
                         {
                             status = Status.Completed;
                             responseNextAssignment = result.Assignment;
                         }
-
+                    }
                     break;
                 case Status.Wrong:
                     currentUserAssignment.TextCodeAccepted = UserAssignmentAcceptedStatus.Declined;
