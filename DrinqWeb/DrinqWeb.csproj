@@ -219,6 +219,7 @@
     <Compile Include="Tools\AssignmentTools\AssignmentFactory.cs" />
     <Compile Include="Tools\MediaTools\FileKind.cs" />
     <Compile Include="Tools\MediaTools\MediaFactory.cs" />
+    <Compile Include="Tools\QuestTools\QuestFactory.cs" />
     <Compile Include="Tools\VerificationItemTools\VerificationItemFactory.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 ﻿using DrinqWeb.Models;
 using DrinqWeb.Models.CodeFirstModels;
+using DrinqWeb.Tools.QuestTools;
 using DrinqWeb.Tools.AssignmentTools;
 using DrinqWeb.Tools.MediaTools;
 using DrinqWeb.Tools.VerificationItemTools;
@@ -44,6 +45,7 @@ namespace DrinqWeb.Controllers.Api
         public IHttpActionResult CheckText([FromBody] string codes)
         {
             AssignmentFactory assignmentFactory = new AssignmentFactory();
+            QuestFactory questFactory = new QuestFactory();
             ApplicationDbContext db = new ApplicationDbContext();
             ApplicationUser user = UserUtils.GetUserById(UserUtils.GetAuthorizationStringFromHeader(Request));
             if (user == null)
@@ -99,15 +101,21 @@ namespace DrinqWeb.Controllers.Api
                         {
                             case UserAssignmentAcceptedStatus.Accepted:
                                 // current assignment completed
-                                status = Status.Completed;
-                                currentUserAssignment.EndDate = DateTime.Now;
-                                currentUserAssignment.Status = UserAssignmentStatus.Completed;
+                                assignmentFactory.CompleteAssigmentForUser(db, currentUserAssignment, user.Id);
 
-                                // start next assignemnt if exists
+                                // get next assignemnt if exists
                                 nextUserAssignment = assignmentFactory.GetNextUserAssignment(db, currentUserAssignment);
-                                nextUserAssignment.Status = UserAssignmentStatus.InProgress;
-                                nextUserAssignment.StartDate = DateTime.Now;
-                                responseNextAssignment = nextUserAssignment.Assignment;
+                                if (nextUserAssignment == null)
+                                {
+                                    //quest completed
+                                    questFactory.CompleteUserQuest(db, currentUserAssignment.UserQuest, user.Id);
+                                }
+                                else
+                                {
+                                    // quest continue
+                                    assignmentFactory.SetAssignmentForUser(db, nextUserAssignment, user.Id);
+                                    responseNextAssignment = nextUserAssignment.Assignment;
+                                }
                                 break;
                             default:
                                 // nothing
@@ -116,10 +124,8 @@ namespace DrinqWeb.Controllers.Api
                     }
                     else
                     {
-                        status = Status.Completed;
-                        currentUserAssignment.EndDate = DateTime.Now;
-                        currentUserAssignment.Status = UserAssignmentStatus.Completed;
-                        // completed
+                        // user assignment completed
+                        assignmentFactory.CompleteAssigmentForUser(db, currentUserAssignment, user.Id);
                     }
 
                     break;
@@ -140,21 +146,6 @@ namespace DrinqWeb.Controllers.Api
 
             return Ok(jsonResponse);
 
-            //  Check user
-            //  Check currentAssignment
-            //  CUQD
-            //  var jsonStr
-            //  Compare code and correct text code:
-            //      OK->    currentAssignment.TextAccepted = Accepted;
-            //              currentAssignment.Status = Completed;
-            //              status = Completed;
-            //              Get next assignment:
-            //                  OK ->   assignment.Status = InProgress;
-            //                  NULL -> currentAssignment.Quest = Completed;
-            //              jsonStr = status + assignment(may be null);
-            //      WRONG-> currentAssignment.TextAccepted = Declined;
-            //              status = Declined;
-            //  return jsonStr;
         }
 
         [HttpPost]

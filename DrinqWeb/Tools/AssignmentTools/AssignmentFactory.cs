@@ -33,5 +33,20 @@ namespace DrinqWeb.Tools.AssignmentTools
                     item.Assignment.Sort == nextAssignmentSortValue)
                 .FirstOrDefault();
         }
+
+        public void SetAssignmentForUser(ApplicationDbContext db, UserAssignment userAssignment, string userId)
+        {
+            userAssignment.Status = UserAssignmentStatus.InProgress;
+            userAssignment.StartDate = DateTime.Now;
+
+        }
+
+        public void CompleteAssigmentForUser(ApplicationDbContext db, UserAssignment UA, string userId)
+        {
+            UA.Status = UserAssignmentStatus.Completed;
+            UA.EndDate = DateTime.Now;
+            db.Entry(UA).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+        }
     }
 }
