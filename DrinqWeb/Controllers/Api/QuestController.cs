@@ -68,13 +68,12 @@ namespace DrinqWeb.Controllers.Api
             db.SaveChanges();
 
             var firstUserAssignment = userAssignments[0];
+            firstUserAssignment.Assignment.TextCodes = null;
+            firstUserAssignment.Assignment.Quest = null;
 
             StartQuestResponseModel responseModel = new StartQuestResponseModel();
-            responseModel.UserQuest.Quest.Title = quest.Title;
-            responseModel.UserQuest.StartDate = uqAdded.StartDate;
-            responseModel.UserQuest.Quest.Description = quest.Description;
-            responseModel.Assignment.Title = firstUserAssignment.Assignment.Title;
-            responseModel.Assignment.Description = firstUserAssignment.Assignment.Description;
+            responseModel.UserQuest = uq;
+            responseModel.Assignment = firstUserAssignment.Assignment;
 
             var outputJson = JsonConvert.SerializeObject(responseModel, Formatting.Indented, new JsonSerializerSettings
             {
