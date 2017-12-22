@@ -59,7 +59,8 @@ namespace DrinqWeb.Controllers
         // GET: VerificationItems
         public ActionResult Index()
         {
-            return View(db.VerificationItems.Include("Media").ToList());
+            var r = db.VerificationItems.Include("Media").Include("VerifiedById").ToList();
+            return View(r);
         }
 
         // GET: VerificationItems/Details/5
@@ -127,8 +128,8 @@ namespace DrinqWeb.Controllers
                 VerificationItem verificationItem = db.VerificationItems.Include("Media").Include("UserAssignment").Where(item => item.Id == verificatedItem.Id).FirstOrDefault();
                 verificationItem.Status = verificatedItem.Status;
                 verificationItem.Message = verificatedItem.Message;
-                verificationItem.VerifiedById = User.Identity.GetUserId();
-                verificationItem.VerifiedDate = DateTime.Now;
+                verificationItem.VerifiedById = db.Users.Find(User.Identity.GetUserId());
+                ; verificationItem.VerifiedDate = DateTime.Now;
                 switch (verificatedItem.Status)
                 {
                     case VerificationItemStatus.Accepted:

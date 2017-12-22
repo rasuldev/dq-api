@@ -12,7 +12,7 @@ namespace DrinqWeb.Models.CodeFirstModels
         public DateTime? IncomingDate { get; set; }
         public DateTime? VerifiedDate { get; set; }
         public Media Media { get; set; }
-        public string VerifiedById { get; set; }
+        public ApplicationUser VerifiedById { get; set; }
         public VerificationItemStatus Status { get; set; }
         public string Message { get; set; }
     }
