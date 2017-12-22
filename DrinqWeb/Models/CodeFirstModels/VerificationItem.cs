@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -14,6 +15,7 @@ namespace DrinqWeb.Models.CodeFirstModels
         public Media Media { get; set; }
         public ApplicationUser VerifiedById { get; set; }
         public VerificationItemStatus Status { get; set; }
+        [DataType(DataType.MultilineText)]
         public string Message { get; set; }
     }
 }
