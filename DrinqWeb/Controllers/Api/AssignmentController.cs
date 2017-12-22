@@ -27,7 +27,7 @@ namespace DrinqWeb.Controllers.Api
             Assignment currentAssignment = curUserAssignment == null ? null : curUserAssignment.Assignment;
 
             if (currentAssignment == null)
-                return BadRequest("У Вас нет активных заданий.");
+                return BadRequest("У Вас нет активного задания.");
 
             currentAssignment.TextCodes = null;
             var json = JsonConvert.SerializeObject(currentAssignment);
@@ -54,6 +54,9 @@ namespace DrinqWeb.Controllers.Api
             var currentUserAssignment = assignmentFactory.GetCurrentUserAssignment(db, user.Id);
             if (currentUserAssignment == null)
                 return BadRequest("У Вас нет активного задания.");
+
+            if (!currentUserAssignment.Assignment.TextRequired)
+                return BadRequest("Для текущего задания не требуются ответы.");
 
             if (currentUserAssignment.TextCodeAccepted == UserAssignmentAcceptedStatus.Accepted)
                 return BadRequest("Ваш ответ уже прошел проверку.");
@@ -135,11 +138,18 @@ namespace DrinqWeb.Controllers.Api
             if (file == null)
                 return BadRequest("Отсутствует файл.");
 
+
             MediaFactory mediaFactory = new MediaFactory();
             VerificationItemFactory itemFactory = new VerificationItemFactory();
             ApplicationDbContext db = new ApplicationDbContext();
             AssignmentFactory assignmentFactory = new AssignmentFactory();
 
+            var currentUserAssignment = assignmentFactory.GetCurrentUserAssignment(db, user.Id);
+            if (currentUserAssignment == null)
+                return BadRequest("У Вас нет активного задания.");
+
+            if (!currentUserAssignment.Assignment.MediaRequired)
+                return BadRequest("Для текущего задания не требуются изображение/видео.");
 
             // check for exist
             var currentUserAssignmentId = assignmentFactory.GetCurrentUserAssignment(db, user.Id).Id;
@@ -152,7 +162,6 @@ namespace DrinqWeb.Controllers.Api
                     return BadRequest("Ваш предыдущий ответ еще не был оценен.");
             }
             // --
-
 
             string[] param = mediaFactory.SaveFile(file, FileKind.VerificationItem);
             string newFileName = param[0];
