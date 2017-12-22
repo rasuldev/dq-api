@@ -11,6 +11,7 @@ using DrinqWeb.Models.CodeFirstModels;
 
 namespace DrinqWeb.Controllers
 {
+    [Authorize]
     public class QuestsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
