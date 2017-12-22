@@ -14,12 +14,12 @@
 <body>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
-    
-    
-    @using (Html.BeginForm()) 
+
+
+    @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        
+
         <div class="form-horizontal">
             <h4>Assignment</h4>
             <hr />
@@ -31,7 +31,7 @@
                     @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                 </div>
             </div>
-    
+
             <div class="form-group">
                 @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -39,7 +39,7 @@
                     @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                 </div>
             </div>
-    
+
             <div class="form-group">
                 @Html.LabelFor(model => model.TextRequired, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </div>
-    
+
             <div class="form-group">
                 @Html.LabelFor(model => model.MediaRequired, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -59,7 +59,7 @@
                     </div>
                 </div>
             </div>
-    
+
             <div class="form-group">
                 @Html.LabelFor(model => model.Sort, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -67,15 +67,29 @@
                     @Html.ValidationMessageFor(model => model.Sort, "", new { @class = "text-danger" })
                 </div>
             </div>
-    
+
             <div class="form-group">
                 @Html.LabelFor(model => model.TextCodes, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.TextCodes, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => model.TextCodes, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.TextBox("textCodes_answer1", "", "", new { @onkeyup = "saveAnswer('answer1')", @class = "form-control" })
+                    @Html.TextBox("textCodes_answer2", "", "", new { @onkeyup = "saveAnswer('answer2')", @class = "form-control" })
+                    @Html.TextBox("textCodes_answer3", "", "", new { @onkeyup = "saveAnswer('answer3')", @class = "form-control" })
+
                     @Html.ValidationMessageFor(model => model.TextCodes, "", new { @class = "text-danger" })
                 </div>
             </div>
-    
+            <script>
+                function saveAnswer(key) {
+                    var ans1 = $('#textCodes_answer1').val();
+                    var ans2 = $('#textCodes_answer2').val();
+                    var ans3 = $('#textCodes_answer3').val();
+                    $('#TextCodes').val(ans1 + '|$|' + ans2 + '|$|' + ans3);
+                }
+            </script>
+
+
+
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Create" class="btn btn-default" />
@@ -83,7 +97,7 @@
             </div>
         </div>
     }
-    
+
     <div>
         @Html.ActionLink("Back to List", "Index")
     </div>
