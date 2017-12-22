@@ -212,6 +212,7 @@
     <Compile Include="Models\CodeFirstModels\UserQuest.cs" />
     <Compile Include="Models\CodeFirstModels\Quest.cs" />
     <Compile Include="Models\CodeFirstModels\UserQuestStatus.cs" />
+    <Compile Include="Models\CodeFirstModels\UserRole.cs" />
     <Compile Include="Models\CodeFirstModels\VerificationItem.cs" />
     <Compile Include="Models\CodeFirstModels\VerificationItemStatus.cs" />
     <Compile Include="Models\IdentityModels.cs" />
