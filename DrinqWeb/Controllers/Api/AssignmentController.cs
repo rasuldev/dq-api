@@ -47,6 +47,8 @@ namespace DrinqWeb.Controllers.Api
             AssignmentFactory assignmentFactory = new AssignmentFactory();
             QuestFactory questFactory = new QuestFactory();
             ApplicationDbContext db = new ApplicationDbContext();
+
+            // validation
             ApplicationUser user = UserUtils.GetUserById(UserUtils.GetAuthorizationStringFromHeader(Request));
             if (user == null)
                 return Unauthorized();
@@ -62,13 +64,13 @@ namespace DrinqWeb.Controllers.Api
                 return BadRequest("Ваш ответ уже прошел проверку.");
 
             // Check user quest duration
-            int currentUserAssignmentDuration = (DateTime.Now - currentUserAssignment.UserQuest.StartDate).Minutes;
+            double currentUserAssignmentDuration = (DateTime.Now - currentUserAssignment.UserQuest.StartDate).TotalMinutes;
             if (currentUserAssignmentDuration > currentUserAssignment.UserQuest.Quest.MaxTime)
             {
                 QuestTools.CancelQuest(db, currentUserAssignment.UserQuest);
                 return Ok("Время, отведенное на выполнение квеста, закончилось.");
             }
-            // -- Check user quest duration
+            // -- validation
 
             var jsonResponse = "";
             var status = Status.Accepted;
@@ -130,6 +132,12 @@ namespace DrinqWeb.Controllers.Api
         [HttpPost]
         public IHttpActionResult Upload()
         {
+            AssignmentFactory assignmentFactory = new AssignmentFactory();
+            VerificationItemFactory itemFactory = new VerificationItemFactory();
+            ApplicationDbContext db = new ApplicationDbContext();
+            MediaFactory mediaFactory = new MediaFactory();
+
+            // validation
             ApplicationUser user = UserUtils.GetUserById(UserUtils.GetAuthorizationStringFromHeader(Request));
             if (user == null)
                 return Unauthorized();
@@ -137,12 +145,6 @@ namespace DrinqWeb.Controllers.Api
             var file = HttpContext.Current.Request.Files.Count > 0 ? HttpContext.Current.Request.Files[0] : null;
             if (file == null)
                 return BadRequest("Отсутствует файл.");
-
-
-            MediaFactory mediaFactory = new MediaFactory();
-            VerificationItemFactory itemFactory = new VerificationItemFactory();
-            ApplicationDbContext db = new ApplicationDbContext();
-            AssignmentFactory assignmentFactory = new AssignmentFactory();
 
             var currentUserAssignment = assignmentFactory.GetCurrentUserAssignment(db, user.Id);
             if (currentUserAssignment == null)
@@ -161,7 +163,7 @@ namespace DrinqWeb.Controllers.Api
                 if (currentUserAssignmentVerificationItem.Status == VerificationItemStatus.NotVerified)
                     return BadRequest("Ваш предыдущий ответ еще не был оценен.");
             }
-            // --
+            // -- validation
 
             string[] param = mediaFactory.SaveFile(file, FileKind.VerificationItem);
             string newFileName = param[0];
