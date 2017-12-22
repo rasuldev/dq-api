@@ -12,45 +12,53 @@
     <title>Index</title>
 </head>
 <body>
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table table-condensed table-bordered">
-        <thead>
-            <tr class="active">
-                <th>
-                    @Html.DisplayNameFor(model => model.Quest)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.User)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Status)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
+    @*<p>
+            @Html.ActionLink("Create New", "Create")
+        </p>*@
+    <div class="container-fluid" style="margin-top: 10px; margin-left:10px;margin-right:10px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <table class="table table-condensed table-bordered">
+                        <thead>
+                            <tr class="active">
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Quest)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.StartDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.User)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Status)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quest.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.User.UserName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Quest.Title)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StartDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.User.UserName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
