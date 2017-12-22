@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using DrinqWeb.Models;
 using DrinqWeb.Models.CodeFirstModels;
+using DrinqWeb.Models.Filter;
 
 namespace DrinqWeb.Controllers
 {
@@ -17,9 +18,23 @@ namespace DrinqWeb.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: UserQuests
-        public ActionResult Index()
+        public ActionResult Index(FilterUserQuestStatus? userQuestStatus)
         {
-            return View(db.UserQuests.Include(item => item.Quest).Include(item => item.User).ToList());
+            IQueryable<UserQuest> userQuests = db.UserQuests.Include(item => item.Quest).Include(item => item.User);
+            if (userQuestStatus != null && userQuestStatus != FilterUserQuestStatus.All)
+            {
+                userQuests = userQuests.Where(p => p.Status == (UserQuestStatus)userQuestStatus);
+            }
+
+            var statuses = Enum.GetValues(typeof(FilterUserQuestStatus)).Cast<FilterUserQuestStatus>().ToList();
+            // устанавливаем начальный элемент, который позволит выбрать всех
+            UserQuestsListViewModel uqlvm = new UserQuestsListViewModel
+            {
+                UserQuests = userQuests.ToList(),
+                Status = new SelectList(statuses, FilterUserQuestStatus.All)
+            };
+
+            return View(uqlvm);
         }
 
         // GET: UserQuests/Details/5
