@@ -10,67 +10,109 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
 </head>
 <body>
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IncomingDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VerifiedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VerifiedById)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Message)
-            </th>
-            <th>
-                Verification Item
-            </th>
-            <th></th>
-        </tr>
+    @*<p>
+            @Html.ActionLink("Create New", "Create")
+        </p>*@
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IncomingDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.VerifiedDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.VerifiedById)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Message)
-                </td>
-                <td>
-                    @{
-                        var media = item.Media;
-                        if (media.MediaType == DrinqWeb.Models.CodeFirstModels.MediaType.Image)
-                        {
-                            <text><img width="120" height="160" src="@media.MediaFile@media.Title " /></text>
-                        }
-                    }
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-                </td>
-            </tr>
-                        }
+    <style>
+        tr > :last-child {
+            width: 100%;
+            position: relative;
+            vertical-align: top;
+        }
 
-    </table>
+            tr > :last-child > div {
+                position: absolute;
+                width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                padding-right: 5px;
+            }
+
+        tr > :first-child {
+            width: 30%;
+            padding: 0;
+        }
+    </style>
+    <div class="container-fluid" style="margin-top: 10px; margin-left:10px;margin-right:10px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-4" style="margin-top: 10px;">
+                            <div class="thumbnail">
+                                @{
+                                    var media = item.Media;
+                                    if (media.MediaType == DrinqWeb.Models.CodeFirstModels.MediaType.Image)
+                                    {
+                                        <img alt="Bootstrap Thumbnail First" width="120" height="160" src="@media.MediaFile@media.Title">
+                                    }
+                                }
+
+                                <div class="caption">
+                                    <h3>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </h3>
+                                    <p>
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="modelName">
+                                                        @Html.DisplayNameFor(model => model.IncomingDate)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.IncomingDate)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayNameFor(model => model.VerifiedDate)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.VerifiedDate)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayNameFor(model => model.VerifiedById)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.VerifiedById)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayNameFor(model => model.Message)
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            @Html.DisplayFor(modelItem => item.Message)
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </p>
+                                    <p>
+                                        @Html.ActionLink("Оценить", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 </body>
 </html>
