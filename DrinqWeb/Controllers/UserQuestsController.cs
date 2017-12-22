@@ -18,12 +18,22 @@ namespace DrinqWeb.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: UserQuests
-        public ActionResult Index(FilterUserQuestStatus? userQuestStatus)
+        public ActionResult Index(FilterUserQuestStatus? userQuestStatus, DateTime? StartDate, DateTime? EndDate)
         {
             IQueryable<UserQuest> userQuests = db.UserQuests.Include(item => item.Quest).Include(item => item.User);
             if (userQuestStatus != null && userQuestStatus != FilterUserQuestStatus.All)
             {
                 userQuests = userQuests.Where(p => p.Status == (UserQuestStatus)userQuestStatus);
+            }
+
+            if (StartDate != null)
+            {
+                userQuests = userQuests.Where(p => p.StartDate > StartDate);
+            }
+
+            if (EndDate != null)
+            {
+                userQuests = userQuests.Where(p => p.EndDate < EndDate);
             }
 
             var statuses = Enum.GetValues(typeof(FilterUserQuestStatus)).Cast<FilterUserQuestStatus>().ToList();

@@ -10,6 +10,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
+    <link rel="stylesheet" href="~/Content/jquery-ui.min.css" />
 </head>
 <body>
     @*<p>
@@ -22,6 +23,9 @@
                     <label class="control-label">Команда: </label>
                     @Html.DropDownList("userQuestStatus", Model.Status as SelectList,
                     htmlAttributes: new { @class = "form-control" })
+
+                    @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control" })
 
                     <input type="submit" value="Фильтр" class="btn btn-default" />
                 </div>
@@ -53,20 +57,20 @@
                         <tbody>
                             @foreach (var item in Model.UserQuests)
             {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Quest.Title)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.StartDate)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.User.UserName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Status)
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Quest.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.User.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>
@@ -74,5 +78,16 @@
             </div>
         </div>
     </div>
+
+
+    <script src="~/Scripts/jquery.js"></script>
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <script>
+
+        $("#StartDate").datepicker();
+        $("#EndDate").datepicker();
+    </script>
+
+
 </body>
 </html>
