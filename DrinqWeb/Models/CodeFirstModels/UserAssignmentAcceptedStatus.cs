@@ -1,7 +1,18 @@
-﻿namespace DrinqWeb.Models.CodeFirstModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DrinqWeb.Models.CodeFirstModels
 {
     public enum UserAssignmentAcceptedStatus
     {
-        Initial, Declined, Accepted, Verifying, NotApplicable
+        [Display(Name ="Начальное")]
+        Initial,
+        [Display(Name = "Отклонен")]
+        Declined,
+        [Display(Name = "Принят")]
+        Accepted,
+        [Display(Name = "Обрабатывается")]
+        Verifying,
+        [Display(Name = "Не требуется")]
+        NotApplicable
     }
 }

@@ -9,11 +9,11 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
+    <title>Детали</title>
 </head>
 <body>
     <div>
-        <h4>Quest</h4>
+        <h4>Квест</h4>
         <hr />
         <dl class="dl-horizontal">
             <dt>
@@ -67,9 +67,9 @@
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")|
-        @Html.ActionLink("Add Assignment", "AddAssignment", new { qId = Model.Id }) |
+        @Html.ActionLink("Изменить", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Назад к списку", "Index")
+        @Html.ActionLink("Добавить задачу", "AddAssignment", new { qId = Model.Id }) |
     </p>
 </body>
 </html>

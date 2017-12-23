@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    <title>Список</title>
     <link rel="stylesheet" href="~/Content/jquery-ui.min.css" />
 </head>
 <body>
@@ -74,7 +74,7 @@
                                         @Html.DisplayFor(modelItem => item.Status)
                                     </td>
                                     <td>
-                                        @Html.ActionLink("Details", "Details", new { id = item.Id })
+                                        @Html.ActionLink("Детали", "Details", new { id = item.Id })
                                     </td>
                                 </tr>
                             }

@@ -1,7 +1,16 @@
-﻿namespace DrinqWeb.Models.CodeFirstModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DrinqWeb.Models.CodeFirstModels
 {
     public enum UserAssignmentStatus
     {
-        InProgress, NotAvailable, Completed, Failed
+        [Display(Name = "В процессе")]
+        InProgress,
+        [Display(Name = "Не доступно")]
+        NotAvailable,
+        [Display(Name = "Выполнено")]
+        Completed,
+        [Display(Name = "Провалено")]
+        Failed
     }
 }

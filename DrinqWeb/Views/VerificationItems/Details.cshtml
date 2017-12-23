@@ -9,11 +9,11 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
+    <title>Детали</title>
 </head>
 <body>
     <div>
-        <h4>VerificationItem</h4>
+        <h4>Элемент для подтверждения</h4>
         <hr />
         <dl class="dl-horizontal">
             <dt>
@@ -64,9 +64,7 @@
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Accept", "Accept", new { Id = Model.Id, message = "aaa" })|
-        @Html.ActionLink("Decline", "Decline", new { Id = Model.Id, message = Model.Message })|
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Назад к списку", "Index")
     </p>
 </body>
 </html>

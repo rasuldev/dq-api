@@ -1,7 +1,14 @@
-﻿namespace DrinqWeb.Models.CodeFirstModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DrinqWeb.Models.CodeFirstModels
 {
     public enum UserQuestStatus
     {
-        InProgress, Completed, Failed
+        [Display(Name = "В процессе")]
+        InProgress,
+        [Display(Name = "Выполнено")]
+        Completed,
+        [Display(Name = "Провалено")]
+        Failed
     }
 }
