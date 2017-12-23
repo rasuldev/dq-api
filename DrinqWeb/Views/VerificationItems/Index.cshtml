@@ -50,9 +50,20 @@
                             <div class="thumbnail">
                                 @{
                                     var media = item.Media;
-                                    if (media.MediaType == DrinqWeb.Models.CodeFirstModels.MediaType.Image)
+                                    switch (media.MediaType)
                                     {
-                                        <img alt="Bootstrap Thumbnail First" width="120" height="160" src="@media.MediaFile@media.Title">
+                                        case DrinqWeb.Models.CodeFirstModels.MediaType.Image:
+                                            <text><a href="@media.MediaFile@media.Title"><img height="320" width="290" src="@media.MediaFile@media.Title " /></a></text>
+                                            break;
+                                        case DrinqWeb.Models.CodeFirstModels.MediaType.Video:
+                                            <video width="340" height="315" controls="controls" poster="~/Content/video.png">
+                                                <source src="@media.MediaFile@media.Title" type='video/ogg; codecs="theora, vorbis"'>
+                                                <source src="@media.MediaFile@media.Title" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+                                                <source src="@media.MediaFile@media.Title" type='video/webm; codecs="vp8, vorbis"'>
+                                                Тег video не поддерживается вашим браузером.
+                                                <a href="@media.MediaFile@media.Title">Скачайте видео</a>.
+                                            </video>
+                                            break;
                                     }
                                 }
 
