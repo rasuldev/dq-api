@@ -52,25 +52,31 @@
                                 <th>
                                     @Html.DisplayNameFor(model => model.UserQuests.FirstOrDefault().Status)
                                 </th>
+                                <th>
+                                    Действия
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model.UserQuests)
             {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Quest.Title)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.StartDate)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.User.UserName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Quest.Title)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StartDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.User.UserName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Details", "Details", new { id = item.Id })
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>

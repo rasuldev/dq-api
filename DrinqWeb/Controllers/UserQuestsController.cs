@@ -54,7 +54,7 @@ namespace DrinqWeb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserQuest userQuest = db.UserQuests.Find(id);
+            UserQuest userQuest = db.UserQuests.Include(item => item.Quest).Include(item => item.User).Where(item => item.Id == id).FirstOrDefault();
             if (userQuest == null)
             {
                 return HttpNotFound();
