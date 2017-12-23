@@ -20,7 +20,7 @@
         <div class="row">
             <form method="get">
                 <div class="form-inline">
-                    <label class="control-label">Команда: </label>
+                    <label class="control-label">Статус: </label>
                     @Html.DropDownList("userQuestStatus", Model.Status as SelectList,
                     htmlAttributes: new { @class = "form-control" })
 
@@ -31,6 +31,9 @@
                 </div>
             </form>
         </div>
+        <p>
+
+        </p>
         @{
             var modelName = Model.UserQuests.FirstOrDefault();
         }
