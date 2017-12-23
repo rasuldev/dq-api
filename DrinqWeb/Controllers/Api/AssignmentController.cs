@@ -57,12 +57,6 @@ namespace DrinqWeb.Controllers.Api
             if (currentUserAssignment == null)
                 return BadRequest("У Вас нет активного задания.");
 
-            if (!currentUserAssignment.Assignment.TextRequired)
-                return BadRequest("Для текущего задания не требуются ответы.");
-
-            if (currentUserAssignment.TextCodeAccepted == UserAssignmentAcceptedStatus.Accepted)
-                return BadRequest("Ваш ответ уже прошел проверку.");
-
             // Check user quest duration
             double currentUserAssignmentDuration = (DateTime.Now - currentUserAssignment.UserQuest.StartDate).TotalMinutes;
             if (currentUserAssignmentDuration > currentUserAssignment.UserQuest.Quest.MaxTime)
@@ -71,6 +65,12 @@ namespace DrinqWeb.Controllers.Api
                 return Ok("Время, отведенное на выполнение квеста, закончилось.");
             }
             // -- validation
+
+            if (!currentUserAssignment.Assignment.TextRequired)
+                return BadRequest("Для текущего задания не требуются ответы.");
+
+            if (currentUserAssignment.TextCodeAccepted == UserAssignmentAcceptedStatus.Accepted)
+                return BadRequest("Ваш ответ уже прошел проверку.");
 
             var jsonResponse = "";
             var status = Status.Accepted;
@@ -149,6 +149,15 @@ namespace DrinqWeb.Controllers.Api
             var currentUserAssignment = assignmentFactory.GetCurrentUserAssignment(db, user.Id);
             if (currentUserAssignment == null)
                 return BadRequest("У Вас нет активного задания.");
+
+            // Check user quest duration
+            double currentUserAssignmentDuration = (DateTime.Now - currentUserAssignment.UserQuest.StartDate).TotalMinutes;
+            if (currentUserAssignmentDuration > currentUserAssignment.UserQuest.Quest.MaxTime)
+            {
+                QuestTools.CancelQuest(db, currentUserAssignment.UserQuest);
+                return Ok("Время, отведенное на выполнение квеста, закончилось.");
+            }
+            // -- validation
 
             if (!currentUserAssignment.Assignment.MediaRequired)
                 return BadRequest("Для текущего задания не требуются изображение/видео.");
