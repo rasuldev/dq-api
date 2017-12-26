@@ -59,7 +59,24 @@ namespace DrinqWeb.Controllers
             {
                 return HttpNotFound();
             }
-            return View(userQuest);
+            UserQuestDetailViewModel model = new UserQuestDetailViewModel();
+            model.UserQuest = userQuest;
+            model.TotalAssignmentsCount = db.Assignments.Where(a => a.Quest.Id == userQuest.Quest.Id).Count();
+            model.FinishedAssignmentCount = db.UserAssignments.Where(ua => ua.UserQuest.Id == userQuest.Id && ua.Status == UserAssignmentStatus.Completed).Count();
+
+            var curAssignments = db.UserAssignments.Where(ua => ua.UserQuest.Id == userQuest.Id && ua.Status == UserAssignmentStatus.InProgress).Include(item => item.Assignment).ToList();
+            var titles = "Нет активных";
+            if (curAssignments.Count > 0)
+            {
+                titles = "";
+                for (int i = 0; i < curAssignments.Count - 1; i++)
+                {
+                    titles += curAssignments[i].Assignment.Title + ", ";
+                }
+                titles += curAssignments.Last().Assignment.Title;
+            }
+            model.CurrentAssignmentsTitle = titles;
+            return View(model);
         }
 
         // GET: UserQuests/Create

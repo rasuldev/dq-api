@@ -63,7 +63,7 @@
                                         @Html.DisplayFor(modelItem => item.Sort)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.TextCodes)
+                                        @Html.DisplayFor(modelItem => item.TextCodes).ToString().Replace("|$|", ",")
                                     </td>
                                     <td>
                                         @Html.ActionLink("Изменить", "Edit", new { id = item.Id }) |
