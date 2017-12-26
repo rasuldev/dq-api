@@ -47,30 +47,14 @@ namespace DrinqWeb.Controllers.Api
             AssignmentFactory assignmentFactory = new AssignmentFactory();
             QuestFactory questFactory = new QuestFactory();
             ApplicationDbContext db = new ApplicationDbContext();
-
-            // validation
             ApplicationUser user = UserUtils.GetUserById(UserUtils.GetAuthorizationStringFromHeader(Request));
-            if (user == null)
-                return Unauthorized();
-
             var currentUserAssignment = assignmentFactory.GetCurrentUserAssignment(db, user.Id);
-            if (currentUserAssignment == null)
-                return BadRequest("У Вас нет активного задания.");
 
-            // Check user quest duration
-            double currentUserAssignmentDuration = (DateTime.Now - currentUserAssignment.UserQuest.StartDate).TotalMinutes;
-            if (currentUserAssignmentDuration > currentUserAssignment.UserQuest.Quest.MaxTime)
-            {
-                QuestTools.CancelQuest(db, currentUserAssignment.UserQuest);
-                return Ok("Время, отведенное на выполнение квеста, закончилось.");
-            }
-            // -- validation
-
-            if (!currentUserAssignment.Assignment.TextRequired)
-                return BadRequest("Для текущего задания не требуются ответы.");
-
-            if (currentUserAssignment.TextCodeAccepted == UserAssignmentAcceptedStatus.Accepted)
-                return BadRequest("Ваш ответ уже прошел проверку.");
+            // Verification
+            var VerificationResult = Verification(db, VerificationFor.CheckText);
+            if (VerificationResult != null)
+                return VerificationResult;
+            // -- Verification
 
             var jsonResponse = "";
             var status = Status.Accepted;
@@ -136,43 +120,14 @@ namespace DrinqWeb.Controllers.Api
             VerificationItemFactory itemFactory = new VerificationItemFactory();
             ApplicationDbContext db = new ApplicationDbContext();
             MediaFactory mediaFactory = new MediaFactory();
-
-            // validation
             ApplicationUser user = UserUtils.GetUserById(UserUtils.GetAuthorizationStringFromHeader(Request));
-            if (user == null)
-                return Unauthorized();
-
             var file = HttpContext.Current.Request.Files.Count > 0 ? HttpContext.Current.Request.Files[0] : null;
-            if (file == null)
-                return BadRequest("Отсутствует файл.");
 
-            var currentUserAssignment = assignmentFactory.GetCurrentUserAssignment(db, user.Id);
-            if (currentUserAssignment == null)
-                return BadRequest("У Вас нет активного задания.");
-
-            // Check user quest duration
-            double currentUserAssignmentDuration = (DateTime.Now - currentUserAssignment.UserQuest.StartDate).TotalMinutes;
-            if (currentUserAssignmentDuration > currentUserAssignment.UserQuest.Quest.MaxTime)
-            {
-                QuestTools.CancelQuest(db, currentUserAssignment.UserQuest);
-                return Ok("Время, отведенное на выполнение квеста, закончилось.");
-            }
-            // -- validation
-
-            if (!currentUserAssignment.Assignment.MediaRequired)
-                return BadRequest("Для текущего задания не требуются изображение/видео.");
-
-            // check for exist
-            var currentUserAssignmentId = assignmentFactory.GetCurrentUserAssignment(db, user.Id).Id;
-            var currentUserAssignmentVerificationItem = db.VerificationItems.Where(vi => vi.UserAssignment.Id == currentUserAssignmentId).OrderByDescending(key => key.IncomingDate).FirstOrDefault();
-            if (currentUserAssignmentVerificationItem != null)
-            {
-                if (currentUserAssignmentVerificationItem.Status == VerificationItemStatus.Accepted)
-                    return BadRequest("Ваш ответ уже был принят администратором.");
-                if (currentUserAssignmentVerificationItem.Status == VerificationItemStatus.NotVerified)
-                    return BadRequest("Ваш предыдущий ответ еще не был оценен.");
-            }
-            // -- validation
+            // Verification
+            var VerificationResult = Verification(db, VerificationFor.Upload);
+            if (VerificationResult != null)
+                return VerificationResult;
+            // -- Verification
 
             string[] param = mediaFactory.SaveFile(file, FileKind.VerificationItem);
             string newFileName = param[0];
@@ -184,6 +139,67 @@ namespace DrinqWeb.Controllers.Api
             itemFactory.AddVerificationItemToDb(db, item);
 
             return Ok();
+        }
+        private enum VerificationFor
+        {
+            Upload,
+            CheckText
+        }
+        private IHttpActionResult Verification(ApplicationDbContext db, VerificationFor verificationFor)
+        {
+            // init
+            AssignmentFactory assignmentFactory = new AssignmentFactory();
+            VerificationItemFactory itemFactory = new VerificationItemFactory();
+            MediaFactory mediaFactory = new MediaFactory();
+            ApplicationUser user = UserUtils.GetUserById(UserUtils.GetAuthorizationStringFromHeader(Request));
+            var currentUserAssignment = assignmentFactory.GetCurrentUserAssignment(db, user.Id);
+
+            //both verification
+            if (user == null)
+                return Unauthorized();
+
+            if (currentUserAssignment == null)
+                return BadRequest("У Вас нет активного задания.");
+
+            double currentUserAssignmentDuration = (DateTime.Now - currentUserAssignment.UserQuest.StartDate).TotalMinutes;
+            if (currentUserAssignmentDuration > currentUserAssignment.UserQuest.Quest.MaxTime)
+            {
+                QuestTools.CancelQuest(db, currentUserAssignment.UserQuest);
+                return BadRequest("Время, отведенное на выполнение квеста, закончилось.");
+            }
+
+            // checktext verification
+            if (verificationFor == VerificationFor.CheckText)
+            {
+                if (!currentUserAssignment.Assignment.TextRequired)
+                    return BadRequest("Для текущего задания не требуются ответы.");
+
+                if (currentUserAssignment.TextCodeAccepted == UserAssignmentAcceptedStatus.Accepted)
+                    return BadRequest("Ваш ответ уже прошел проверку.");
+            }
+
+            // checkmedia verification
+            if (verificationFor == VerificationFor.Upload)
+            {
+                var file = HttpContext.Current.Request.Files.Count > 0 ? HttpContext.Current.Request.Files[0] : null;
+                if (file == null)
+                    return BadRequest("Отсутствует файл.");
+
+                if (!currentUserAssignment.Assignment.MediaRequired)
+                    return BadRequest("Для текущего задания не требуются изображение/видео.");
+
+                // check for exist
+                var currentUserAssignmentId = assignmentFactory.GetCurrentUserAssignment(db, user.Id).Id;
+                var currentUserAssignmentVerificationItem = db.VerificationItems.Where(vi => vi.UserAssignment.Id == currentUserAssignmentId).OrderByDescending(key => key.IncomingDate).FirstOrDefault();
+                if (currentUserAssignmentVerificationItem != null)
+                {
+                    if (currentUserAssignmentVerificationItem.Status == VerificationItemStatus.Accepted)
+                        return BadRequest("Ваш ответ уже был принят администратором.");
+                    if (currentUserAssignmentVerificationItem.Status == VerificationItemStatus.NotVerified)
+                        return BadRequest("Ваш предыдущий ответ еще не был оценен.");
+                }
+            }
+            return null;
         }
     }
 }
