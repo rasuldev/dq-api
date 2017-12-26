@@ -1,5 +1,6 @@
 ﻿using DrinqWeb.Models;
 using DrinqWeb.Models.CodeFirstModels;
+using DrinqWeb.Tools.QuestTools;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -95,7 +96,7 @@ namespace DrinqWeb.Controllers.Api
             UserQuest userQuest = db.UserQuests.Include("Quest").Where(item => item.User.Id == user.Id && item.Status == UserQuestStatus.InProgress).FirstOrDefault();
             if (userQuest != null)
             {
-                QuestTools.CancelQuest(db, userQuest);
+                QuestUtils.CancelQuest(db, userQuest);
                 return Ok("Текущее задание отменено.");
             }
             else

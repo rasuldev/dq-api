@@ -221,7 +221,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\AssignmentResponseModel.cs" />
-    <Compile Include="Models\QuestTools.cs" />
+    <Compile Include="Tools\QuestTools\QuestUtils.cs" />
     <Compile Include="Models\StartQuestResponseModel.cs" />
     <Compile Include="Models\UserQuestDetailViewModel.cs" />
     <Compile Include="Models\UserUtils.cs" />

@@ -23,11 +23,14 @@ namespace DrinqWeb.Controllers.Api
             if (user == null)
                 return Unauthorized();
 
-            var curUserAssignment = assignmentFactory.GetCurrentUserAssignment(db, user.Id);
-            Assignment currentAssignment = curUserAssignment == null ? null : curUserAssignment.Assignment;
+            var currentUserAssignment = assignmentFactory.GetCurrentUserAssignment(db, user.Id);
+            Assignment currentAssignment = currentUserAssignment == null ? null : currentUserAssignment.Assignment;
 
             if (currentAssignment == null)
                 return BadRequest("У Вас нет активного задания.");
+
+            if (QuestUtils.HasCurrentQuestTimeExpired(db, currentUserAssignment))
+                return BadRequest("Время, отведенное на выполнение квеста, закончилось.");
 
             currentAssignment.TextCodes = null;
             var json = JsonConvert.SerializeObject(currentAssignment);
@@ -140,11 +143,13 @@ namespace DrinqWeb.Controllers.Api
 
             return Ok();
         }
+
         private enum VerificationFor
         {
             Upload,
             CheckText
         }
+
         private IHttpActionResult Verification(ApplicationDbContext db, VerificationFor verificationFor)
         {
             // init
@@ -155,20 +160,23 @@ namespace DrinqWeb.Controllers.Api
             var currentUserAssignment = assignmentFactory.GetCurrentUserAssignment(db, user.Id);
 
             //both verification
+
+            // user 
             if (user == null)
                 return Unauthorized();
 
+            // current assignment
             if (currentUserAssignment == null)
                 return BadRequest("У Вас нет активного задания.");
 
-            double currentUserAssignmentDuration = (DateTime.Now - currentUserAssignment.UserQuest.StartDate).TotalMinutes;
-            if (currentUserAssignmentDuration > currentUserAssignment.UserQuest.Quest.MaxTime)
-            {
-                QuestTools.CancelQuest(db, currentUserAssignment.UserQuest);
+            // quest time
+            if (QuestUtils.HasCurrentQuestTimeExpired(db, currentUserAssignment))
                 return BadRequest("Время, отведенное на выполнение квеста, закончилось.");
-            }
 
-            // checktext verification
+            // -- both verification
+
+
+            // text verification
             if (verificationFor == VerificationFor.CheckText)
             {
                 if (!currentUserAssignment.Assignment.TextRequired)
@@ -177,12 +185,13 @@ namespace DrinqWeb.Controllers.Api
                 if (currentUserAssignment.TextCodeAccepted == UserAssignmentAcceptedStatus.Accepted)
                     return BadRequest("Ваш ответ уже прошел проверку.");
             }
+            // -- text verification
 
-            // checkmedia verification
+            // media verification
             if (verificationFor == VerificationFor.Upload)
             {
                 var file = HttpContext.Current.Request.Files.Count > 0 ? HttpContext.Current.Request.Files[0] : null;
-                if (file == null)
+                if (file == null || file.ContentLength == 0)
                     return BadRequest("Отсутствует файл.");
 
                 if (!currentUserAssignment.Assignment.MediaRequired)
@@ -199,6 +208,8 @@ namespace DrinqWeb.Controllers.Api
                         return BadRequest("Ваш предыдущий ответ еще не был оценен.");
                 }
             }
+            // -- media verification
+
             return null;
         }
     }

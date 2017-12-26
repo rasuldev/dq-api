@@ -1,12 +1,11 @@
-﻿using DrinqWeb.Models.CodeFirstModels;
+﻿using DrinqWeb.Models;
+using DrinqWeb.Models.CodeFirstModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
-namespace DrinqWeb.Models
+namespace DrinqWeb.Tools.QuestTools
 {
-    public class QuestTools
+    public class QuestUtils
     {
         public static void CancelQuest(ApplicationDbContext context, UserQuest userQuest)
         {
@@ -30,6 +29,17 @@ namespace DrinqWeb.Models
                 context.Entry(assignment).State = System.Data.Entity.EntityState.Modified;
             }
             context.SaveChanges();
+        }
+
+        public static bool HasCurrentQuestTimeExpired(ApplicationDbContext db, UserAssignment currentUserAssignment)
+        {
+            double currentUserAssignmentDuration = (DateTime.Now - currentUserAssignment.UserQuest.StartDate).TotalMinutes;
+            if (currentUserAssignmentDuration > currentUserAssignment.UserQuest.Quest.MaxTime)
+            {
+                CancelQuest(db, currentUserAssignment.UserQuest);
+                return true;
+            }
+            return false;
         }
     }
 }
