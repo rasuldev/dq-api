@@ -33,7 +33,7 @@ namespace DrinqWeb.Controllers
 
             if (EndDate != null)
             {
-                userQuests = userQuests.Where(p => p.EndDate < EndDate);
+                userQuests = userQuests.Where(p => p.EndDate < EndDate || p.EndDate == null);
             }
 
             var statuses = Enum.GetValues(typeof(FilterUserQuestStatus)).Cast<FilterUserQuestStatus>().ToList();
